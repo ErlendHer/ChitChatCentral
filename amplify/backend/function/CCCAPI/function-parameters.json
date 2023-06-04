@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "auth": {
+      "ccc": [
+        "read"
+      ]
+    },
+    "api": {
+      "AdminQueries": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "ccc": [
+        "Query",
+        "Mutation",
+        "Subscription"
+      ]
+    },
+    "storage": {
+      "s3ccc": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Todo:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "lib": ["dom", "esnext"],
+    "module": "commonjs",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "sourceMap": false,
+    "outDir": "../src",
+    "baseUrl": "./",
+  },
+  "include": [
+    "./**/*.ts"
+  ],
+  "exclude": [
+    "./node_modules"
+  ]
+}

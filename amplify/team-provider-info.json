@@ -1,0 +1,44 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-chitchatcentral-dev-202245-authRole",
+      "UnauthRoleArn": "arn:aws:iam::333004928696:role/amplify-chitchatcentral-dev-202245-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::333004928696:role/amplify-chitchatcentral-dev-202245-authRole",
+      "Region": "eu-north-1",
+      "DeploymentBucketName": "amplify-chitchatcentral-dev-202245-deployment",
+      "UnauthRoleName": "amplify-chitchatcentral-dev-202245-unauthRole",
+      "StackName": "amplify-chitchatcentral-dev-202245",
+      "StackId": "arn:aws:cloudformation:eu-north-1:333004928696:stack/amplify-chitchatcentral-dev-202245/a3839660-023b-11ee-a1ca-06a8a5af1e94",
+      "AmplifyAppId": "d23oqzsrosouzi",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-chitchatcentral-dev-202245-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    },
+    "categories": {
+      "auth": {
+        "ccc": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "OnProfilePictureUpload": {
+          "deploymentBucketName": "amplify-chitchatcentral-dev-202245-deployment",
+          "s3Key": "amplify-builds/OnProfilePictureUpload-4234654d6d77554b4f6e-build.zip"
+        },
+        "AdminQueries5c2256b8": {
+          "deploymentBucketName": "amplify-chitchatcentral-dev-202245-deployment",
+          "s3Key": "amplify-builds/AdminQueries5c2256b8-6138413661634f442f33-build.zip"
+        },
+        "CCCAPI": {
+          "deploymentBucketName": "amplify-chitchatcentral-dev-202245-deployment",
+          "s3Key": "amplify-builds/CCCAPI-554f6c38353149385161-build.zip"
+        }
+      },
+      "api": {
+        "AdminQueries": {},
+        "ccc": {},
+        "cccapi": {}
+      },
+      "storage": {
+        "s3ccc": {}
+      }
+    }
+  }
+}

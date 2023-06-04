@@ -1,0 +1,15 @@
+{
+  "resourceName": "s3ccc",
+  "policyUUID": "a35ed30b",
+  "bucketName": "ccc",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "OnProfilePictureUpload"
+}

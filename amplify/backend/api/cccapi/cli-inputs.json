@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "paths": {
+    "/rooms": {
+      "name": "/rooms",
+      "lambdaFunction": "CCCAPI",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    }
+  }
+}
