@@ -36,7 +36,7 @@ export async function executeGQLRequest<T extends object, V = undefined>(query: 
       throw new Error(`Failed to execute GraphQL request: ${response.statusText}`);
     }
 
-    const responseData = (await response.json()) as GraphQLResponse<T>;
+    const responseData = (await response.json()) as GraphQLResponse<V>;
 
     if (responseData.errors) {
       throw new Error(`Failed to execute GraphQL request with error: ${JSON.stringify(responseData.errors)}`);
@@ -44,7 +44,7 @@ export async function executeGQLRequest<T extends object, V = undefined>(query: 
 
     return {
       success: true,
-      data: responseData.data as GraphQLResponse<V>
+      data: responseData
     }
   } catch (error) {
     console.error(error);
