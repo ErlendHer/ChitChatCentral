@@ -18,7 +18,8 @@ const config = {
 			fallback: 'index.html'
 		}),
 		alias: {
-			"@shared": "types"
+			"@shared": "types",
+			"@cccApi": "amplify/backend/function/CCCAPI/lib/shared"
 		}
 	}
 };
