@@ -1,38 +1,66 @@
-# create-svelte
+# Chit Chat Central
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+![Chit Chat Central Logo](src/lib/assets/logo/logo-512.png)
 
-## Creating a project
+Welcome to the **Chit Chat Central** repository. This project is a web application that brings users together, enabling them to chat with each other in real time. It is built using a tech stack of SvelteKit, TailwindCSS, and the AWS Amplify ecosystem, and promises a seamless, interactive, and engaging user experience.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Table of Contents
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+- [Development](#development)
+  - [Prerequisites](#prerequisites)
+  - [Setup](#setup)
+  - [Amplify Commands](#amplify-commands)
+- [Contribution Guidelines](#contribution-guidelines)
+- [License](#license)
 
-# create a new project in my-app
-npm create svelte@latest my-app
+## Development
+
+### Prerequisites
+
+Before you start, make sure you have the following software installed on your system:
+
+- Node.js v. 18.x.x
+- npm
+- AWS Amplify CLI
+
+### Setup
+
+To set up your development environment, follow the steps below:
+
+1. **Clone the repository**: Use the following command to clone the repository:
+
+```shell
+git clone https://github.com/yourusername/chit-chat-central.git
 ```
 
-## Developing
+2. **Configure the AWS Amplify CLI**: To configure the AWS Amplify CLI, follow the instructions provided [here](https://docs.amplify.aws/cli/start/install#configure-the-amplify-cli).
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+3. **Install dependencies**: Run the following command in your terminal to install the necessary dependencies:
 
-```bash
+```shell
+npm install
+```
+
+4. **Start the development server**: Run the following command in your terminal to start the development server:
+
+```shell
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+This will start the local development server, and you can now start contributing to the project.
 
-To create a production version of your app:
+### Amplify Commands
 
-```bash
-npm run build
-```
+You can use various AWS Amplify CLI commands to manage your back-end services. The list of commands will be provided soon.
 
-You can preview the production build with `npm run preview`.
+## Contribution Guidelines
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+We appreciate all contributions! If you'd like to contribute, please feel free to submit a pull request.
+
+## License
+
+This project is licensed under the terms of the MIT License. See [LICENSE](LICENSE) for more details.
+
+---
+
+Made with :heart: by Chit Chat Central team.
