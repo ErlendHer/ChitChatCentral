@@ -2,18 +2,22 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export type CreateTodoInput = {
+export type CreateRoomInput = {
   id?: string | null,
   name: string,
-  description?: string | null,
+  participants: Array< string | null >,
+  requireInvite: boolean,
+  creator: string,
 };
 
-export type ModelTodoConditionInput = {
+export type ModelRoomConditionInput = {
   name?: ModelStringInput | null,
-  description?: ModelStringInput | null,
-  and?: Array< ModelTodoConditionInput | null > | null,
-  or?: Array< ModelTodoConditionInput | null > | null,
-  not?: ModelTodoConditionInput | null,
+  participants?: ModelStringInput | null,
+  requireInvite?: ModelBooleanInput | null,
+  creator?: ModelStringInput | null,
+  and?: Array< ModelRoomConditionInput | null > | null,
+  or?: Array< ModelRoomConditionInput | null > | null,
+  not?: ModelRoomConditionInput | null,
 };
 
 export type ModelStringInput = {
@@ -56,32 +60,72 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
-export type Todo = {
-  __typename: "Todo",
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type Room = {
+  __typename: "Room",
   id: string,
   name: string,
-  description?: string | null,
+  participants: Array< string | null >,
+  requireInvite: boolean,
+  creator: string,
+  messages?: ModelMessageConnection | null,
+  createdAt: string,
+  updatedAt: string,
+  owner?: string | null,
+};
+
+export type ModelMessageConnection = {
+  __typename: "ModelMessageConnection",
+  items:  Array<Message | null >,
+  nextToken?: string | null,
+};
+
+export type Message = {
+  __typename: "Message",
+  id: string,
+  content: string,
+  time: string,
+  room?: Room | null,
+  roomId?: string | null,
+  username: string,
   createdAt: string,
   updatedAt: string,
 };
 
-export type UpdateTodoInput = {
+export type UpdateRoomInput = {
   id: string,
   name?: string | null,
-  description?: string | null,
+  participants?: Array< string | null > | null,
+  requireInvite?: boolean | null,
+  creator?: string | null,
 };
 
-export type DeleteTodoInput = {
+export type DeleteRoomInput = {
   id: string,
 };
 
-export type ModelTodoFilterInput = {
-  id?: ModelIDInput | null,
-  name?: ModelStringInput | null,
-  description?: ModelStringInput | null,
-  and?: Array< ModelTodoFilterInput | null > | null,
-  or?: Array< ModelTodoFilterInput | null > | null,
-  not?: ModelTodoFilterInput | null,
+export type CreateMessageInput = {
+  id?: string | null,
+  content: string,
+  time: string,
+  roomId?: string | null,
+  username: string,
+};
+
+export type ModelMessageConditionInput = {
+  content?: ModelStringInput | null,
+  time?: ModelStringInput | null,
+  roomId?: ModelIDInput | null,
+  username?: ModelStringInput | null,
+  and?: Array< ModelMessageConditionInput | null > | null,
+  or?: Array< ModelMessageConditionInput | null > | null,
+  not?: ModelMessageConditionInput | null,
 };
 
 export type ModelIDInput = {
@@ -100,18 +144,59 @@ export type ModelIDInput = {
   size?: ModelSizeInput | null,
 };
 
-export type ModelTodoConnection = {
-  __typename: "ModelTodoConnection",
-  items:  Array<Todo | null >,
+export type UpdateMessageInput = {
+  id: string,
+  content?: string | null,
+  time?: string | null,
+  roomId?: string | null,
+  username?: string | null,
+};
+
+export type DeleteMessageInput = {
+  id: string,
+};
+
+export type ModelRoomFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  participants?: ModelStringInput | null,
+  requireInvite?: ModelBooleanInput | null,
+  creator?: ModelStringInput | null,
+  and?: Array< ModelRoomFilterInput | null > | null,
+  or?: Array< ModelRoomFilterInput | null > | null,
+  not?: ModelRoomFilterInput | null,
+};
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+
+export type ModelRoomConnection = {
+  __typename: "ModelRoomConnection",
+  items:  Array<Room | null >,
   nextToken?: string | null,
 };
 
-export type ModelSubscriptionTodoFilterInput = {
+export type ModelMessageFilterInput = {
+  id?: ModelIDInput | null,
+  content?: ModelStringInput | null,
+  time?: ModelStringInput | null,
+  roomId?: ModelIDInput | null,
+  username?: ModelStringInput | null,
+  and?: Array< ModelMessageFilterInput | null > | null,
+  or?: Array< ModelMessageFilterInput | null > | null,
+  not?: ModelMessageFilterInput | null,
+};
+
+export type ModelSubscriptionRoomFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   name?: ModelSubscriptionStringInput | null,
-  description?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionTodoFilterInput | null > | null,
-  or?: Array< ModelSubscriptionTodoFilterInput | null > | null,
+  requireInvite?: ModelSubscriptionBooleanInput | null,
+  creator?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionRoomFilterInput | null > | null,
+  or?: Array< ModelSubscriptionRoomFilterInput | null > | null,
 };
 
 export type ModelSubscriptionIDInput = {
@@ -144,83 +229,369 @@ export type ModelSubscriptionStringInput = {
   notIn?: Array< string | null > | null,
 };
 
-export type CreateTodoMutationVariables = {
-  input: CreateTodoInput,
-  condition?: ModelTodoConditionInput | null,
+export type ModelSubscriptionBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
 };
 
-export type CreateTodoMutation = {
-  createTodo?:  {
-    __typename: "Todo",
+export type ModelSubscriptionMessageFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  content?: ModelSubscriptionStringInput | null,
+  time?: ModelSubscriptionStringInput | null,
+  roomId?: ModelSubscriptionIDInput | null,
+  and?: Array< ModelSubscriptionMessageFilterInput | null > | null,
+  or?: Array< ModelSubscriptionMessageFilterInput | null > | null,
+};
+
+export type CreateRoomMutationVariables = {
+  input: CreateRoomInput,
+  condition?: ModelRoomConditionInput | null,
+};
+
+export type CreateRoomMutation = {
+  createRoom?:  {
+    __typename: "Room",
     id: string,
     name: string,
-    description?: string | null,
+    participants: Array< string | null >,
+    requireInvite: boolean,
+    creator: string,
+    messages?:  {
+      __typename: "ModelMessageConnection",
+      items:  Array< {
+        __typename: "Message",
+        id: string,
+        content: string,
+        time: string,
+        roomId?: string | null,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type UpdateRoomMutationVariables = {
+  input: UpdateRoomInput,
+  condition?: ModelRoomConditionInput | null,
+};
+
+export type UpdateRoomMutation = {
+  updateRoom?:  {
+    __typename: "Room",
+    id: string,
+    name: string,
+    participants: Array< string | null >,
+    requireInvite: boolean,
+    creator: string,
+    messages?:  {
+      __typename: "ModelMessageConnection",
+      items:  Array< {
+        __typename: "Message",
+        id: string,
+        content: string,
+        time: string,
+        roomId?: string | null,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type DeleteRoomMutationVariables = {
+  input: DeleteRoomInput,
+  condition?: ModelRoomConditionInput | null,
+};
+
+export type DeleteRoomMutation = {
+  deleteRoom?:  {
+    __typename: "Room",
+    id: string,
+    name: string,
+    participants: Array< string | null >,
+    requireInvite: boolean,
+    creator: string,
+    messages?:  {
+      __typename: "ModelMessageConnection",
+      items:  Array< {
+        __typename: "Message",
+        id: string,
+        content: string,
+        time: string,
+        roomId?: string | null,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type CreateMessageMutationVariables = {
+  input: CreateMessageInput,
+  condition?: ModelMessageConditionInput | null,
+};
+
+export type CreateMessageMutation = {
+  createMessage?:  {
+    __typename: "Message",
+    id: string,
+    content: string,
+    time: string,
+    room?:  {
+      __typename: "Room",
+      id: string,
+      name: string,
+      participants: Array< string | null >,
+      requireInvite: boolean,
+      creator: string,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null,
+    roomId?: string | null,
+    username: string,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type UpdateTodoMutationVariables = {
-  input: UpdateTodoInput,
-  condition?: ModelTodoConditionInput | null,
+export type UpdateMessageMutationVariables = {
+  input: UpdateMessageInput,
+  condition?: ModelMessageConditionInput | null,
 };
 
-export type UpdateTodoMutation = {
-  updateTodo?:  {
-    __typename: "Todo",
+export type UpdateMessageMutation = {
+  updateMessage?:  {
+    __typename: "Message",
     id: string,
-    name: string,
-    description?: string | null,
+    content: string,
+    time: string,
+    room?:  {
+      __typename: "Room",
+      id: string,
+      name: string,
+      participants: Array< string | null >,
+      requireInvite: boolean,
+      creator: string,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null,
+    roomId?: string | null,
+    username: string,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type DeleteTodoMutationVariables = {
-  input: DeleteTodoInput,
-  condition?: ModelTodoConditionInput | null,
+export type DeleteMessageMutationVariables = {
+  input: DeleteMessageInput,
+  condition?: ModelMessageConditionInput | null,
 };
 
-export type DeleteTodoMutation = {
-  deleteTodo?:  {
-    __typename: "Todo",
+export type DeleteMessageMutation = {
+  deleteMessage?:  {
+    __typename: "Message",
     id: string,
-    name: string,
-    description?: string | null,
+    content: string,
+    time: string,
+    room?:  {
+      __typename: "Room",
+      id: string,
+      name: string,
+      participants: Array< string | null >,
+      requireInvite: boolean,
+      creator: string,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null,
+    roomId?: string | null,
+    username: string,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type GetTodoQueryVariables = {
+export type GetRoomQueryVariables = {
   id: string,
 };
 
-export type GetTodoQuery = {
-  getTodo?:  {
-    __typename: "Todo",
+export type GetRoomQuery = {
+  getRoom?:  {
+    __typename: "Room",
     id: string,
     name: string,
-    description?: string | null,
+    participants: Array< string | null >,
+    requireInvite: boolean,
+    creator: string,
+    messages?:  {
+      __typename: "ModelMessageConnection",
+      items:  Array< {
+        __typename: "Message",
+        id: string,
+        content: string,
+        time: string,
+        roomId?: string | null,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
-export type ListTodosQueryVariables = {
-  filter?: ModelTodoFilterInput | null,
+export type ListRoomsQueryVariables = {
+  id?: string | null,
+  filter?: ModelRoomFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
+};
+
+export type ListRoomsQuery = {
+  listRooms?:  {
+    __typename: "ModelRoomConnection",
+    items:  Array< {
+      __typename: "Room",
+      id: string,
+      name: string,
+      participants: Array< string | null >,
+      requireInvite: boolean,
+      creator: string,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type RoomsByUsernameQueryVariables = {
+  creator: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelRoomFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListTodosQuery = {
-  listTodos?:  {
-    __typename: "ModelTodoConnection",
+export type RoomsByUsernameQuery = {
+  roomsByUsername?:  {
+    __typename: "ModelRoomConnection",
     items:  Array< {
-      __typename: "Todo",
+      __typename: "Room",
       id: string,
       name: string,
-      description?: string | null,
+      participants: Array< string | null >,
+      requireInvite: boolean,
+      creator: string,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetMessageQueryVariables = {
+  id: string,
+};
+
+export type GetMessageQuery = {
+  getMessage?:  {
+    __typename: "Message",
+    id: string,
+    content: string,
+    time: string,
+    room?:  {
+      __typename: "Room",
+      id: string,
+      name: string,
+      participants: Array< string | null >,
+      requireInvite: boolean,
+      creator: string,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null,
+    roomId?: string | null,
+    username: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListMessagesQueryVariables = {
+  filter?: ModelMessageFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListMessagesQuery = {
+  listMessages?:  {
+    __typename: "ModelMessageConnection",
+    items:  Array< {
+      __typename: "Message",
+      id: string,
+      content: string,
+      time: string,
+      room?:  {
+        __typename: "Room",
+        id: string,
+        name: string,
+        participants: Array< string | null >,
+        requireInvite: boolean,
+        creator: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      } | null,
+      roomId?: string | null,
+      username: string,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -228,46 +599,235 @@ export type ListTodosQuery = {
   } | null,
 };
 
-export type OnCreateTodoSubscriptionVariables = {
-  filter?: ModelSubscriptionTodoFilterInput | null,
+export type MessagesByRoomIdQueryVariables = {
+  roomId: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelMessageFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
 };
 
-export type OnCreateTodoSubscription = {
-  onCreateTodo?:  {
-    __typename: "Todo",
+export type MessagesByRoomIdQuery = {
+  messagesByRoomId?:  {
+    __typename: "ModelMessageConnection",
+    items:  Array< {
+      __typename: "Message",
+      id: string,
+      content: string,
+      time: string,
+      room?:  {
+        __typename: "Room",
+        id: string,
+        name: string,
+        participants: Array< string | null >,
+        requireInvite: boolean,
+        creator: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      } | null,
+      roomId?: string | null,
+      username: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type OnCreateRoomSubscriptionVariables = {
+  filter?: ModelSubscriptionRoomFilterInput | null,
+  owner?: string | null,
+};
+
+export type OnCreateRoomSubscription = {
+  onCreateRoom?:  {
+    __typename: "Room",
     id: string,
     name: string,
-    description?: string | null,
+    participants: Array< string | null >,
+    requireInvite: boolean,
+    creator: string,
+    messages?:  {
+      __typename: "ModelMessageConnection",
+      items:  Array< {
+        __typename: "Message",
+        id: string,
+        content: string,
+        time: string,
+        roomId?: string | null,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnUpdateRoomSubscriptionVariables = {
+  filter?: ModelSubscriptionRoomFilterInput | null,
+  owner?: string | null,
+};
+
+export type OnUpdateRoomSubscription = {
+  onUpdateRoom?:  {
+    __typename: "Room",
+    id: string,
+    name: string,
+    participants: Array< string | null >,
+    requireInvite: boolean,
+    creator: string,
+    messages?:  {
+      __typename: "ModelMessageConnection",
+      items:  Array< {
+        __typename: "Message",
+        id: string,
+        content: string,
+        time: string,
+        roomId?: string | null,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnDeleteRoomSubscriptionVariables = {
+  filter?: ModelSubscriptionRoomFilterInput | null,
+  owner?: string | null,
+};
+
+export type OnDeleteRoomSubscription = {
+  onDeleteRoom?:  {
+    __typename: "Room",
+    id: string,
+    name: string,
+    participants: Array< string | null >,
+    requireInvite: boolean,
+    creator: string,
+    messages?:  {
+      __typename: "ModelMessageConnection",
+      items:  Array< {
+        __typename: "Message",
+        id: string,
+        content: string,
+        time: string,
+        roomId?: string | null,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnCreateMessageSubscriptionVariables = {
+  filter?: ModelSubscriptionMessageFilterInput | null,
+  username?: string | null,
+};
+
+export type OnCreateMessageSubscription = {
+  onCreateMessage?:  {
+    __typename: "Message",
+    id: string,
+    content: string,
+    time: string,
+    room?:  {
+      __typename: "Room",
+      id: string,
+      name: string,
+      participants: Array< string | null >,
+      requireInvite: boolean,
+      creator: string,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null,
+    roomId?: string | null,
+    username: string,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type OnUpdateTodoSubscriptionVariables = {
-  filter?: ModelSubscriptionTodoFilterInput | null,
+export type OnUpdateMessageSubscriptionVariables = {
+  filter?: ModelSubscriptionMessageFilterInput | null,
+  username?: string | null,
 };
 
-export type OnUpdateTodoSubscription = {
-  onUpdateTodo?:  {
-    __typename: "Todo",
+export type OnUpdateMessageSubscription = {
+  onUpdateMessage?:  {
+    __typename: "Message",
     id: string,
-    name: string,
-    description?: string | null,
+    content: string,
+    time: string,
+    room?:  {
+      __typename: "Room",
+      id: string,
+      name: string,
+      participants: Array< string | null >,
+      requireInvite: boolean,
+      creator: string,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null,
+    roomId?: string | null,
+    username: string,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type OnDeleteTodoSubscriptionVariables = {
-  filter?: ModelSubscriptionTodoFilterInput | null,
+export type OnDeleteMessageSubscriptionVariables = {
+  filter?: ModelSubscriptionMessageFilterInput | null,
+  username?: string | null,
 };
 
-export type OnDeleteTodoSubscription = {
-  onDeleteTodo?:  {
-    __typename: "Todo",
+export type OnDeleteMessageSubscription = {
+  onDeleteMessage?:  {
+    __typename: "Message",
     id: string,
-    name: string,
-    description?: string | null,
+    content: string,
+    time: string,
+    room?:  {
+      __typename: "Room",
+      id: string,
+      name: string,
+      participants: Array< string | null >,
+      requireInvite: boolean,
+      creator: string,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null,
+    roomId?: string | null,
+    username: string,
     createdAt: string,
     updatedAt: string,
   } | null,

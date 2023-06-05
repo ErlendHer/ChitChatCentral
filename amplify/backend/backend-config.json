@@ -139,14 +139,6 @@
         },
         {
           "attributes": [
-            "ApiName",
-            "ApiId"
-          ],
-          "category": "api",
-          "resourceName": "AdminQueries"
-        },
-        {
-          "attributes": [
             "GraphQLAPIIdOutput",
             "GraphQLAPIEndpointOutput",
             "GraphQLAPIKeyOutput"
@@ -169,56 +161,6 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
-    }
-  },
-  "parameters": {
-    "AMPLIFY_function_AdminQueries5c2256b8_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "AdminQueries5c2256b8"
-        }
-      ]
-    },
-    "AMPLIFY_function_AdminQueries5c2256b8_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "AdminQueries5c2256b8"
-        }
-      ]
-    },
-    "AMPLIFY_function_CCCAPI_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "CCCAPI"
-        }
-      ]
-    },
-    "AMPLIFY_function_CCCAPI_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "CCCAPI"
-        }
-      ]
-    },
-    "AMPLIFY_function_OnProfilePictureUpload_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "OnProfilePictureUpload"
-        }
-      ]
-    },
-    "AMPLIFY_function_OnProfilePictureUpload_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "OnProfilePictureUpload"
-        }
-      ]
     }
   },
   "storage": {

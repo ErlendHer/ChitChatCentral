@@ -12,7 +12,8 @@
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
 		"amplify:OnProfilePictureUpload_OLD": "cd amplify/backend/function/OnProfilePictureUpload/lib && npm install && npm run build && cd ../src && npm install && rimraf node_modules/sharp && npm install --arch=x64 --platform=linux --libc=glibc sharp && cd ..",
-		"amplify:OnProfilePictureUpload": "cd amplify/backend/function/OnProfilePictureUpload/lib && npm install && npm run build && cd .."
+		"amplify:OnProfilePictureUpload": "cd amplify/backend/function/OnProfilePictureUpload/lib && npm install && npm run build && cd ..",
+		"amplify:CCCAPI": "cd amplify/backend/function/CCCAPI/lib && npm install && npm run build && cd .."
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.0.0",

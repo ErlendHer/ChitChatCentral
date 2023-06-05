@@ -1,0 +1,8 @@
+# Ignore all files in srx directory
+src/*
+
+# Except for specific files
+!src/package.json
+!src/event.json
+!src/package-lock.json
+!src/yarn.lock

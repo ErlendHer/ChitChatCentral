@@ -20,14 +20,6 @@
       "Type": "String",
       "Default": "authcccUserPoolId"
     },
-    "apiAdminQueriesApiName": {
-      "Type": "String",
-      "Default": "apiAdminQueriesApiName"
-    },
-    "apiAdminQueriesApiId": {
-      "Type": "String",
-      "Default": "apiAdminQueriesApiId"
-    },
     "apicccGraphQLAPIIdOutput": {
       "Type": "String",
       "Default": "apicccGraphQLAPIIdOutput"
@@ -43,6 +35,14 @@
     "storages3cccBucketName": {
       "Type": "String",
       "Default": "storages3cccBucketName"
+    },
+    "apicccapiApiName": {
+      "Type": "String",
+      "Default": "apicccapiApiName"
+    },
+    "apicccapiApiId": {
+      "Type": "String",
+      "Default": "apicccapiApiId"
     }
   },
   "Conditions": {
@@ -101,12 +101,6 @@
             "AUTH_CCC_USERPOOLID": {
               "Ref": "authcccUserPoolId"
             },
-            "API_ADMINQUERIES_APINAME": {
-              "Ref": "apiAdminQueriesApiName"
-            },
-            "API_ADMINQUERIES_APIID": {
-              "Ref": "apiAdminQueriesApiId"
-            },
             "API_CCC_GRAPHQLAPIIDOUTPUT": {
               "Ref": "apicccGraphQLAPIIdOutput"
             },
@@ -119,12 +113,18 @@
             "STORAGE_S3CCC_BUCKETNAME": {
               "Ref": "storages3cccBucketName"
             },
-            "API_CCC_TODOTABLE_NAME": {
+            "API_CCCAPI_APINAME": {
+              "Ref": "apicccapiApiName"
+            },
+            "API_CCCAPI_APIID": {
+              "Ref": "apicccapiApiId"
+            },
+            "API_CCC_ROOMTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicccGraphQLAPIIdOutput}:GetAtt:TodoTable:Name"
+                "Fn::Sub": "${apicccGraphQLAPIIdOutput}:GetAtt:RoomTable:Name"
               }
             },
-            "API_CCC_TODOTABLE_ARN": {
+            "API_CCC_ROOMTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -139,7 +139,33 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicccGraphQLAPIIdOutput}:GetAtt:TodoTable:Name"
+                      "Fn::Sub": "${apicccGraphQLAPIIdOutput}:GetAtt:RoomTable:Name"
+                    }
+                  }
+                ]
+              ]
+            },
+            "API_CCC_MESSAGETABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apicccGraphQLAPIIdOutput}:GetAtt:MessageTable:Name"
+              }
+            },
+            "API_CCC_MESSAGETABLE_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:dynamodb:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":table/",
+                  {
+                    "Fn::ImportValue": {
+                      "Fn::Sub": "${apicccGraphQLAPIIdOutput}:GetAtt:MessageTable:Name"
                     }
                   }
                 ]
@@ -258,6 +284,51 @@
             {
               "Effect": "Allow",
               "Action": [
+                "cognito-idp:ConfirmSignUp",
+                "cognito-idp:AdminCreateUser",
+                "cognito-idp:CreateUserImportJob",
+                "cognito-idp:AdminSetUserSettings",
+                "cognito-idp:AdminLinkProviderForUser",
+                "cognito-idp:CreateIdentityProvider",
+                "cognito-idp:AdminConfirmSignUp",
+                "cognito-idp:AdminDisableUser",
+                "cognito-idp:AdminRemoveUserFromGroup",
+                "cognito-idp:SetUserMFAPreference",
+                "cognito-idp:SetUICustomization",
+                "cognito-idp:SignUp",
+                "cognito-idp:VerifyUserAttribute",
+                "cognito-idp:SetRiskConfiguration",
+                "cognito-idp:StartUserImportJob",
+                "cognito-idp:AdminSetUserPassword",
+                "cognito-idp:AssociateSoftwareToken",
+                "cognito-idp:CreateResourceServer",
+                "cognito-idp:RespondToAuthChallenge",
+                "cognito-idp:CreateUserPoolClient",
+                "cognito-idp:AdminUserGlobalSignOut",
+                "cognito-idp:GlobalSignOut",
+                "cognito-idp:AddCustomAttributes",
+                "cognito-idp:CreateGroup",
+                "cognito-idp:CreateUserPool",
+                "cognito-idp:AdminForgetDevice",
+                "cognito-idp:AdminAddUserToGroup",
+                "cognito-idp:AdminRespondToAuthChallenge",
+                "cognito-idp:ForgetDevice",
+                "cognito-idp:CreateUserPoolDomain",
+                "cognito-idp:AdminEnableUser",
+                "cognito-idp:AdminUpdateDeviceStatus",
+                "cognito-idp:StopUserImportJob",
+                "cognito-idp:InitiateAuth",
+                "cognito-idp:AdminInitiateAuth",
+                "cognito-idp:AdminSetUserMFAPreference",
+                "cognito-idp:ConfirmForgotPassword",
+                "cognito-idp:SetUserSettings",
+                "cognito-idp:VerifySoftwareToken",
+                "cognito-idp:AdminDisableProviderForUser",
+                "cognito-idp:SetUserPoolMfaConfig",
+                "cognito-idp:ChangePassword",
+                "cognito-idp:ConfirmDevice",
+                "cognito-idp:AdminResetUserPassword",
+                "cognito-idp:ResendConfirmationCode",
                 "cognito-identity:Describe*",
                 "cognito-identity:Get*",
                 "cognito-identity:List*",
@@ -271,7 +342,29 @@
                 "cognito-sync:List*",
                 "iam:ListOpenIdConnectProviders",
                 "iam:ListRoles",
-                "sns:ListPlatformApplications"
+                "sns:ListPlatformApplications",
+                "cognito-idp:ForgotPassword",
+                "cognito-idp:UpdateAuthEventFeedback",
+                "cognito-idp:UpdateResourceServer",
+                "cognito-idp:UpdateUserPoolClient",
+                "cognito-idp:AdminUpdateUserAttributes",
+                "cognito-idp:UpdateUserAttributes",
+                "cognito-idp:UpdateUserPoolDomain",
+                "cognito-idp:UpdateIdentityProvider",
+                "cognito-idp:UpdateGroup",
+                "cognito-idp:AdminUpdateAuthEventFeedback",
+                "cognito-idp:UpdateDeviceStatus",
+                "cognito-idp:UpdateUserPool",
+                "cognito-idp:DeleteUserPoolDomain",
+                "cognito-idp:DeleteResourceServer",
+                "cognito-idp:DeleteGroup",
+                "cognito-idp:AdminDeleteUserAttributes",
+                "cognito-idp:DeleteUserPoolClient",
+                "cognito-idp:DeleteUserAttributes",
+                "cognito-idp:DeleteUserPool",
+                "cognito-idp:AdminDeleteUser",
+                "cognito-idp:DeleteIdentityProvider",
+                "cognito-idp:DeleteUser"
               ],
               "Resource": [
                 {
@@ -290,36 +383,6 @@
                       {
                         "Ref": "authcccUserPoolId"
                       }
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "apigateway:POST",
-                "apigateway:PUT",
-                "apigateway:GET",
-                "apigateway:HEAD",
-                "apigateway:OPTIONS",
-                "apigateway:PATCH",
-                "apigateway:DELETE"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:apigateway:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      "::/restapis/",
-                      {
-                        "Ref": "apiAdminQueriesApiName"
-                      },
-                      "/*"
                     ]
                   ]
                 }
@@ -464,7 +527,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicccGraphQLAPIIdOutput}:GetAtt:TodoTable:Name"
+                          "Fn::Sub": "${apicccGraphQLAPIIdOutput}:GetAtt:RoomTable:Name"
                         }
                       }
                     ]
@@ -485,7 +548,69 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicccGraphQLAPIIdOutput}:GetAtt:TodoTable:Name"
+                          "Fn::Sub": "${apicccGraphQLAPIIdOutput}:GetAtt:RoomTable:Name"
+                        }
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:Update*",
+                "dynamodb:RestoreTable*",
+                "dynamodb:Delete*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apicccGraphQLAPIIdOutput}:GetAtt:MessageTable:Name"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apicccGraphQLAPIIdOutput}:GetAtt:MessageTable:Name"
                         }
                       },
                       "/index/*"

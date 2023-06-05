@@ -4,5 +4,5 @@
 </script>
 
 <WrapWithAuth let:user let:userInfo>
-	<HomeView />
+	<HomeView {userInfo} />
 </WrapWithAuth>

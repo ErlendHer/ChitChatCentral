@@ -2,16 +2,13 @@
   "permissions": {
     "auth": {
       "ccc": [
-        "read"
-      ]
-    },
-    "api": {
-      "AdminQueries": [
         "create",
         "read",
         "update",
         "delete"
-      ],
+      ]
+    },
+    "api": {
       "ccc": [
         "Query",
         "Mutation",
@@ -25,7 +22,13 @@
         "update",
         "delete"
       ],
-      "Todo:@model(appsync)": [
+      "Room:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Message:@model(appsync)": [
         "create",
         "read",
         "update",

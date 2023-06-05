@@ -1,104 +1,58 @@
-/*
-Copyright 2017 - 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at
-    http://aws.amazon.com/apache2.0/
-or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and limitations under the License.
-*/
-
-
-/* Amplify Params - DO NOT EDIT
-	API_ADMINQUERIES_APIID
-	API_ADMINQUERIES_APINAME
-	API_CCC_GRAPHQLAPIENDPOINTOUTPUT
-	API_CCC_GRAPHQLAPIIDOUTPUT
-	API_CCC_GRAPHQLAPIKEYOUTPUT
-	API_CCC_TODOTABLE_ARN
-	API_CCC_TODOTABLE_NAME
-	AUTH_CCC_USERPOOLID
-	ENV
-	REGION
-	STORAGE_S3CCC_BUCKETNAME
-Amplify Params - DO NOT EDIT */
-
-const express = require('express')
-const bodyParser = require('body-parser')
-const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
-
-// declare a new express app
-const app = express()
-app.use(bodyParser.json())
-app.use(awsServerlessExpressMiddleware.eventContext())
-
-// Enable CORS for all methods
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*")
-  res.header("Access-Control-Allow-Headers", "*")
-  next()
-});
-
-
-/**********************
- * Example get method *
- **********************/
-
-app.get('/rooms', function(req, res) {
-  // Add your code here
-  res.json({success: 'get call succeed!', url: req.url});
-});
-
-app.get('/item/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'get call succeed!', url: req.url});
-});
-
-/****************************
-* Example post method *
-****************************/
-
-app.post('/item', function(req, res) {
-  // Add your code here
-  res.json({success: 'post call succeed!', url: req.url, body: req.body})
-});
-
-app.post('/item/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'post call succeed!', url: req.url, body: req.body})
-});
-
-/****************************
-* Example put method *
-****************************/
-
-app.put('/item', function(req, res) {
-  // Add your code here
-  res.json({success: 'put call succeed!', url: req.url, body: req.body})
-});
-
-app.put('/item/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'put call succeed!', url: req.url, body: req.body})
-});
-
-/****************************
-* Example delete method *
-****************************/
-
-app.delete('/item', function(req, res) {
-  // Add your code here
-  res.json({success: 'delete call succeed!', url: req.url});
-});
-
-app.delete('/item/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'delete call succeed!', url: req.url});
-});
-
-app.listen(3000, function() {
-    console.log("App started")
-});
-
-// Export the app object. When executing the application local this does nothing. However,
-// to port it to AWS Lambda we will create a wrapper around that will load the app from
-// this file
-module.exports = app
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.initializeApp = void 0;
+const express_1 = __importDefault(require("express"));
+const body_parser_1 = __importDefault(require("body-parser"));
+const middleware_1 = __importDefault(require("aws-serverless-express/middleware"));
+const cors_middleware_1 = require("./src/middleware/cors.middleware");
+const rooms_routes_1 = require("./src/routes/rooms.routes");
+const error_1 = require("./src/error/error");
+const authentication_middleware_1 = require("./src/middleware/authentication.middleware");
+function initializeApp() {
+    const app = (0, express_1.default)();
+    initializeMiddleware(app);
+    startServer(app);
+    initializeAuthenticatedRoutes(app);
+    initializeErrorHandling(app);
+    return app;
+}
+exports.initializeApp = initializeApp;
+function initializeMiddleware(app) {
+    app.use(body_parser_1.default.json());
+    app.use(cors_middleware_1.corsMiddleware);
+    app.use(middleware_1.default.eventContext());
+}
+function initializeAuthenticatedRoutes(app) {
+    app.use(authentication_middleware_1.authMiddleware);
+    app.use('/rooms', rooms_routes_1.RoomsRouter);
+}
+/**
+ * Initialize error handling for all the requests. This will be called if we call next with an error object
+ */
+function initializeErrorHandling(app) {
+    // Our request was not handled
+    app.use((req, res, next) => {
+        const error = new Error('Not found -> Endpoint does not exist. Read the endpoints docs');
+        error.status = 404;
+        next(error);
+    });
+    // All unhandled errors should be passed on here using next(error)
+    app.use((error, req, res, next) => {
+        console.error(req.url + ' failed with error: ' + error);
+        const expressError = (0, error_1.isExpressError)(error) ? error : (0, error_1.err)(error, 500);
+        res.status(expressError.status || 500);
+        res.json({
+            error: {
+                message: expressError.toString(),
+            },
+        });
+    });
+}
+function startServer(app) {
+    app.listen(3000, () => {
+        console.log("App started");
+    });
+}

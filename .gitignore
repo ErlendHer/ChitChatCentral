@@ -9,6 +9,14 @@ node_modules
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
+
+amplify/temp/
+amplify/.temp/*
+amplify/.temp
+#Playground files
+**/playground.ts
+**/*.playground.ts
+
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
@@ -30,7 +38,3 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
-
-#Playground files
-**/playground.ts
-**/*.playground.ts

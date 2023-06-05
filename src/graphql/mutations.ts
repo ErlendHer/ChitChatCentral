@@ -2,43 +2,175 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createTodo = /* GraphQL */ `
-  mutation CreateTodo(
-    $input: CreateTodoInput!
-    $condition: ModelTodoConditionInput
+export const createRoom = /* GraphQL */ `
+  mutation CreateRoom(
+    $input: CreateRoomInput!
+    $condition: ModelRoomConditionInput
   ) {
-    createTodo(input: $input, condition: $condition) {
+    createRoom(input: $input, condition: $condition) {
       id
       name
-      description
+      participants
+      requireInvite
+      creator
+      messages {
+        items {
+          id
+          content
+          time
+          roomId
+          username
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateRoom = /* GraphQL */ `
+  mutation UpdateRoom(
+    $input: UpdateRoomInput!
+    $condition: ModelRoomConditionInput
+  ) {
+    updateRoom(input: $input, condition: $condition) {
+      id
+      name
+      participants
+      requireInvite
+      creator
+      messages {
+        items {
+          id
+          content
+          time
+          roomId
+          username
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteRoom = /* GraphQL */ `
+  mutation DeleteRoom(
+    $input: DeleteRoomInput!
+    $condition: ModelRoomConditionInput
+  ) {
+    deleteRoom(input: $input, condition: $condition) {
+      id
+      name
+      participants
+      requireInvite
+      creator
+      messages {
+        items {
+          id
+          content
+          time
+          roomId
+          username
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const createMessage = /* GraphQL */ `
+  mutation CreateMessage(
+    $input: CreateMessageInput!
+    $condition: ModelMessageConditionInput
+  ) {
+    createMessage(input: $input, condition: $condition) {
+      id
+      content
+      time
+      room {
+        id
+        name
+        participants
+        requireInvite
+        creator
+        messages {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      roomId
+      username
       createdAt
       updatedAt
     }
   }
 `;
-export const updateTodo = /* GraphQL */ `
-  mutation UpdateTodo(
-    $input: UpdateTodoInput!
-    $condition: ModelTodoConditionInput
+export const updateMessage = /* GraphQL */ `
+  mutation UpdateMessage(
+    $input: UpdateMessageInput!
+    $condition: ModelMessageConditionInput
   ) {
-    updateTodo(input: $input, condition: $condition) {
+    updateMessage(input: $input, condition: $condition) {
       id
-      name
-      description
+      content
+      time
+      room {
+        id
+        name
+        participants
+        requireInvite
+        creator
+        messages {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      roomId
+      username
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteTodo = /* GraphQL */ `
-  mutation DeleteTodo(
-    $input: DeleteTodoInput!
-    $condition: ModelTodoConditionInput
+export const deleteMessage = /* GraphQL */ `
+  mutation DeleteMessage(
+    $input: DeleteMessageInput!
+    $condition: ModelMessageConditionInput
   ) {
-    deleteTodo(input: $input, condition: $condition) {
+    deleteMessage(input: $input, condition: $condition) {
       id
-      name
-      description
+      content
+      time
+      room {
+        id
+        name
+        participants
+        requireInvite
+        creator
+        messages {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      roomId
+      username
       createdAt
       updatedAt
     }

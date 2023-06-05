@@ -5,7 +5,7 @@
 	import InputErrorMessage from '$lib/client/components/common/InputErrorMessage.svelte';
 	import { faRightToBracket, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 	import { signIn, signUp } from '$lib/client/auth/auth';
-	import type { Result } from '$lib/global/common.types';
+	import type { Result } from '@shared/execution';
 	import { openErrorToast } from '$lib/client/toast';
 	import { isFormTouched as isFormTouched } from './+layout.svelte';
 	import { goto } from '$app/navigation';

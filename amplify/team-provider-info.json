@@ -18,26 +18,26 @@
         "userPoolGroups": {}
       },
       "function": {
-        "OnProfilePictureUpload": {
-          "deploymentBucketName": "amplify-chitchatcentral-dev-202245-deployment",
-          "s3Key": "amplify-builds/OnProfilePictureUpload-4234654d6d77554b4f6e-build.zip"
-        },
         "AdminQueries5c2256b8": {
           "deploymentBucketName": "amplify-chitchatcentral-dev-202245-deployment",
           "s3Key": "amplify-builds/AdminQueries5c2256b8-6138413661634f442f33-build.zip"
         },
         "CCCAPI": {
           "deploymentBucketName": "amplify-chitchatcentral-dev-202245-deployment",
-          "s3Key": "amplify-builds/CCCAPI-554f6c38353149385161-build.zip"
+          "s3Key": "amplify-builds/CCCAPI-2b6f51462b4845517673-build.zip"
+        },
+        "OnProfilePictureUpload": {
+          "deploymentBucketName": "amplify-chitchatcentral-dev-202245-deployment",
+          "s3Key": "amplify-builds/OnProfilePictureUpload-4234654d6d77554b4f6e-build.zip"
         }
+      },
+      "storage": {
+        "s3ccc": {}
       },
       "api": {
         "AdminQueries": {},
         "ccc": {},
         "cccapi": {}
-      },
-      "storage": {
-        "s3ccc": {}
       }
     }
   }

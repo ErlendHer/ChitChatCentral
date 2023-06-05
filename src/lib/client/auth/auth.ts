@@ -1,10 +1,10 @@
 import { goto } from '$app/navigation';
-import type { Result } from '$lib/global/common.types';
 import type { CognitoUser } from '@aws-amplify/auth';
 import { Auth, Hub } from 'aws-amplify';
 import { writable, type Writable } from 'svelte/store';
 import defaultProfileImage from '$lib/assets/images/profile-blank.png';
 import { openErrorToast } from '../toast';
+import type { Result } from "@shared/execution";
 
 export const user: Writable<CognitoUser | null> = writable(null);
 export const userInfo: Writable<UserInfo | null> = writable(null);
@@ -189,5 +189,15 @@ export async function updateUserInfo(user: CognitoUser) {
   } catch (error) {
     console.error(error);
     openErrorToast('Failed to fetch user info');
+  }
+}
+
+export async function getIdToken() {
+  try {
+    const session = await Auth.currentSession();
+    return session.getIdToken().getJwtToken();
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to get access token');
   }
 }

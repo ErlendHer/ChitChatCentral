@@ -1,22 +1,34 @@
 <script lang="ts">
-	import { signOut } from '$lib/client/auth/auth';
+	import { getIdToken, type UserInfo } from '$lib/client/auth/auth';
 	import IconButtonWithLoadingSpinner from '$lib/client/components/common/IconButtonWithLoadingSpinner.svelte';
-	import {
-		faAnglesRight,
-		faCirclePlus,
-		faRightFromBracket
-	} from '@fortawesome/free-solid-svg-icons';
-	import InputWithErrorMessage from '../../common/InputWithErrorMessage.svelte';
-	import IconButton from '../../common/IconButton.svelte';
+	import { openErrorToast, openSuccessToast } from '$lib/client/toast';
+	import type { CognitoUser } from '@aws-amplify/auth';
+	import { faAnglesRight, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 	import { API } from 'aws-amplify';
+	import InputWithErrorMessage from '../../common/InputWithErrorMessage.svelte';
 
-	async function testCall() {
+	export let userInfo: UserInfo;
+
+	let createRoomLoading = false;
+
+	async function createRoom() {
 		try {
-			const result = await API.get('cccapi', '/item/2', {});
+			createRoomLoading = true;
+
+			console.log('GetIdToken: ' + getIdToken());
+
+			const result = await API.post('cccapi', '/rooms/create', {
+				body: { username: 'user123' },
+				headers: { Authorization: `${await getIdToken()}` }
+			});
 
 			console.log(result);
-		} catch (error) {
-			console.error(error);
+			openSuccessToast(`Created room ${result.roomId}`);
+		} catch (err) {
+			console.error(err);
+			openErrorToast(`Failed to create room: ${err}`);
+		} finally {
+			createRoomLoading = false;
 		}
 	}
 </script>
@@ -35,7 +47,9 @@
 			<IconButtonWithLoadingSpinner
 				text="Create Chat Room"
 				icon={faCirclePlus}
-				onClick={testCall}
+				onClick={createRoom}
+				loading={createRoomLoading}
+				disabled={createRoomLoading}
 			/>
 		</div>
 
