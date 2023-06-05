@@ -69,7 +69,9 @@ const getRoomInfo = build<Response_GetRoom>(async (req) => {
     return err(new Error("Room not found"), 404);
   }
 
-  if (gqlData.participants.includes(user.sub)) {
+  const participantSubs = gqlData.participants.map((p) => p.S);
+
+  if (participantSubs.includes(user.sub)) {
     return err(new Error("You are not a participant of this room"), 403);
   };
 
@@ -77,7 +79,7 @@ const getRoomInfo = build<Response_GetRoom>(async (req) => {
     data: {
       creator: gqlData.creator,
       name: gqlData.name,
-      participants: gqlData.participants,
+      participants: participantSubs,
       requireInvite: gqlData.requireInvite,
       createdAt: gqlData.createdAt
     }

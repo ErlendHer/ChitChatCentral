@@ -37,7 +37,7 @@ export interface GQL_RESPONSE_getRoom {
   getRoom?: {
     creator: string;
     name: string;
-    participants: string[];
+    participants: { S: string }[];
     requireInvite: boolean;
     createdAt: string;
   }
