@@ -16,10 +16,10 @@ type Room
     { allow: private, ownerField: "participants", operations: [read]}
   ]
   ) {
-  id: ID!  @primaryKey 
+  id: ID! @primaryKey 
   name: String! 
   participants: [String]!
-  requireInvite: Boolean! 
+  requireInvite: Boolean!
   creator: String! 
     @index(name: "byUser", queryField: "roomsByUsername")
   creatorSub: String!,
@@ -35,10 +35,21 @@ type Message
     ]
   )
   {
-  id: ID!
+  id: ID! @primaryKey
   content: String!
   time: AWSDateTime!
   room: Room @belongsTo(fields: ["roomId"])
-  roomId: ID @index(name: "byRoom")
+  roomId: ID @index(name: "byRoom", sortKeyFields: ["time"])
   username: String!
+}
+
+
+type Subscription {
+  newMessage(roomId: ID!): Message 
+    @aws_subscribe(mutations: ["createMessage"])
+    @auth(rules: [
+      { allow: private, provider: iam },
+      { allow: public}, 
+      { allow: private}
+    ])
 }

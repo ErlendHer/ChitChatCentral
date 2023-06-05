@@ -9,6 +9,7 @@ export const getRoom = /* GraphQL */ `
       name
       participants
       requireInvite
+      aesKey
       creator
       creatorSub
       messages {
@@ -48,6 +49,7 @@ export const listRooms = /* GraphQL */ `
         name
         participants
         requireInvite
+        aesKey
         creator
         creatorSub
         messages {
@@ -80,6 +82,7 @@ export const roomsByUsername = /* GraphQL */ `
         name
         participants
         requireInvite
+        aesKey
         creator
         creatorSub
         messages {
@@ -103,6 +106,7 @@ export const getMessage = /* GraphQL */ `
         name
         participants
         requireInvite
+        aesKey
         creator
         creatorSub
         messages {
@@ -120,11 +124,19 @@ export const getMessage = /* GraphQL */ `
 `;
 export const listMessages = /* GraphQL */ `
   query ListMessages(
+    $id: ID
     $filter: ModelMessageFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listMessages(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listMessages(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
         id
         content
@@ -134,6 +146,7 @@ export const listMessages = /* GraphQL */ `
           name
           participants
           requireInvite
+          aesKey
           creator
           creatorSub
           createdAt
@@ -148,16 +161,18 @@ export const listMessages = /* GraphQL */ `
     }
   }
 `;
-export const messagesByRoomId = /* GraphQL */ `
-  query MessagesByRoomId(
+export const messagesByRoomIdAndTime = /* GraphQL */ `
+  query MessagesByRoomIdAndTime(
     $roomId: ID!
+    $time: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelMessageFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    messagesByRoomId(
+    messagesByRoomIdAndTime(
       roomId: $roomId
+      time: $time
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -172,6 +187,7 @@ export const messagesByRoomId = /* GraphQL */ `
           name
           participants
           requireInvite
+          aesKey
           creator
           creatorSub
           createdAt

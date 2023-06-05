@@ -69,7 +69,7 @@ export const cccApiGET = async <T>(path: string, params?: Record<string, string>
   }
 }
 
-export const cccApiPOST = async <T>(path: string, body?: unknown, params?: Record<string, string>): Promise<ApiResult<T>> => {
+export const cccApiPOST = async <T, U = unknown>(path: string, body?: U, params?: Record<string, string>): Promise<ApiResult<T>> => {
   try {
     const response = await API.post('cccapi', path, { body, queryStringParameters: params, headers: { ...(await getAuthHeader()) } });
     return {

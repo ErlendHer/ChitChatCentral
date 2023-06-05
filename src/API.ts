@@ -7,6 +7,7 @@ export type CreateRoomInput = {
   name: string,
   participants: Array< string | null >,
   requireInvite: boolean,
+  aesKey: string,
   creator: string,
   creatorSub: string,
 };
@@ -15,6 +16,7 @@ export type ModelRoomConditionInput = {
   name?: ModelStringInput | null,
   participants?: ModelStringInput | null,
   requireInvite?: ModelBooleanInput | null,
+  aesKey?: ModelStringInput | null,
   creator?: ModelStringInput | null,
   creatorSub?: ModelStringInput | null,
   and?: Array< ModelRoomConditionInput | null > | null,
@@ -75,6 +77,7 @@ export type Room = {
   name: string,
   participants: Array< string | null >,
   requireInvite: boolean,
+  aesKey: string,
   creator: string,
   creatorSub: string,
   messages?: ModelMessageConnection | null,
@@ -105,6 +108,7 @@ export type UpdateRoomInput = {
   name?: string | null,
   participants?: Array< string | null > | null,
   requireInvite?: boolean | null,
+  aesKey?: string | null,
   creator?: string | null,
   creatorSub?: string | null,
 };
@@ -164,6 +168,7 @@ export type ModelRoomFilterInput = {
   name?: ModelStringInput | null,
   participants?: ModelStringInput | null,
   requireInvite?: ModelBooleanInput | null,
+  aesKey?: ModelStringInput | null,
   creator?: ModelStringInput | null,
   creatorSub?: ModelStringInput | null,
   and?: Array< ModelRoomFilterInput | null > | null,
@@ -194,11 +199,22 @@ export type ModelMessageFilterInput = {
   not?: ModelMessageFilterInput | null,
 };
 
+export type ModelStringKeyConditionInput = {
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+};
+
 export type ModelSubscriptionRoomFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   name?: ModelSubscriptionStringInput | null,
   participants?: ModelSubscriptionStringInput | null,
   requireInvite?: ModelSubscriptionBooleanInput | null,
+  aesKey?: ModelSubscriptionStringInput | null,
   creator?: ModelSubscriptionStringInput | null,
   creatorSub?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionRoomFilterInput | null > | null,
@@ -261,6 +277,7 @@ export type CreateRoomMutation = {
     name: string,
     participants: Array< string | null >,
     requireInvite: boolean,
+    aesKey: string,
     creator: string,
     creatorSub: string,
     messages?:  {
@@ -294,6 +311,7 @@ export type UpdateRoomMutation = {
     name: string,
     participants: Array< string | null >,
     requireInvite: boolean,
+    aesKey: string,
     creator: string,
     creatorSub: string,
     messages?:  {
@@ -327,6 +345,7 @@ export type DeleteRoomMutation = {
     name: string,
     participants: Array< string | null >,
     requireInvite: boolean,
+    aesKey: string,
     creator: string,
     creatorSub: string,
     messages?:  {
@@ -365,6 +384,7 @@ export type CreateMessageMutation = {
       name: string,
       participants: Array< string | null >,
       requireInvite: boolean,
+      aesKey: string,
       creator: string,
       creatorSub: string,
       messages?:  {
@@ -398,6 +418,7 @@ export type UpdateMessageMutation = {
       name: string,
       participants: Array< string | null >,
       requireInvite: boolean,
+      aesKey: string,
       creator: string,
       creatorSub: string,
       messages?:  {
@@ -431,6 +452,7 @@ export type DeleteMessageMutation = {
       name: string,
       participants: Array< string | null >,
       requireInvite: boolean,
+      aesKey: string,
       creator: string,
       creatorSub: string,
       messages?:  {
@@ -458,6 +480,7 @@ export type GetRoomQuery = {
     name: string,
     participants: Array< string | null >,
     requireInvite: boolean,
+    aesKey: string,
     creator: string,
     creatorSub: string,
     messages?:  {
@@ -496,6 +519,7 @@ export type ListRoomsQuery = {
       name: string,
       participants: Array< string | null >,
       requireInvite: boolean,
+      aesKey: string,
       creator: string,
       creatorSub: string,
       messages?:  {
@@ -526,6 +550,7 @@ export type RoomsByUsernameQuery = {
       name: string,
       participants: Array< string | null >,
       requireInvite: boolean,
+      aesKey: string,
       creator: string,
       creatorSub: string,
       messages?:  {
@@ -555,6 +580,7 @@ export type GetMessageQuery = {
       name: string,
       participants: Array< string | null >,
       requireInvite: boolean,
+      aesKey: string,
       creator: string,
       creatorSub: string,
       messages?:  {
@@ -572,9 +598,11 @@ export type GetMessageQuery = {
 };
 
 export type ListMessagesQueryVariables = {
+  id?: string | null,
   filter?: ModelMessageFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
 };
 
 export type ListMessagesQuery = {
@@ -591,6 +619,7 @@ export type ListMessagesQuery = {
         name: string,
         participants: Array< string | null >,
         requireInvite: boolean,
+        aesKey: string,
         creator: string,
         creatorSub: string,
         createdAt: string,
@@ -605,16 +634,17 @@ export type ListMessagesQuery = {
   } | null,
 };
 
-export type MessagesByRoomIdQueryVariables = {
+export type MessagesByRoomIdAndTimeQueryVariables = {
   roomId: string,
+  time?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelMessageFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type MessagesByRoomIdQuery = {
-  messagesByRoomId?:  {
+export type MessagesByRoomIdAndTimeQuery = {
+  messagesByRoomIdAndTime?:  {
     __typename: "ModelMessageConnection",
     items:  Array< {
       __typename: "Message",
@@ -627,6 +657,7 @@ export type MessagesByRoomIdQuery = {
         name: string,
         participants: Array< string | null >,
         requireInvite: boolean,
+        aesKey: string,
         creator: string,
         creatorSub: string,
         createdAt: string,
@@ -652,6 +683,7 @@ export type OnCreateRoomSubscription = {
     name: string,
     participants: Array< string | null >,
     requireInvite: boolean,
+    aesKey: string,
     creator: string,
     creatorSub: string,
     messages?:  {
@@ -684,6 +716,7 @@ export type OnUpdateRoomSubscription = {
     name: string,
     participants: Array< string | null >,
     requireInvite: boolean,
+    aesKey: string,
     creator: string,
     creatorSub: string,
     messages?:  {
@@ -716,6 +749,7 @@ export type OnDeleteRoomSubscription = {
     name: string,
     participants: Array< string | null >,
     requireInvite: boolean,
+    aesKey: string,
     creator: string,
     creatorSub: string,
     messages?:  {
@@ -754,6 +788,7 @@ export type OnCreateMessageSubscription = {
       name: string,
       participants: Array< string | null >,
       requireInvite: boolean,
+      aesKey: string,
       creator: string,
       creatorSub: string,
       messages?:  {
@@ -787,6 +822,7 @@ export type OnUpdateMessageSubscription = {
       name: string,
       participants: Array< string | null >,
       requireInvite: boolean,
+      aesKey: string,
       creator: string,
       creatorSub: string,
       messages?:  {
@@ -820,6 +856,40 @@ export type OnDeleteMessageSubscription = {
       name: string,
       participants: Array< string | null >,
       requireInvite: boolean,
+      aesKey: string,
+      creator: string,
+      creatorSub: string,
+      messages?:  {
+        __typename: "ModelMessageConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    roomId?: string | null,
+    username: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type NewMessageSubscriptionVariables = {
+  roomId: string,
+};
+
+export type NewMessageSubscription = {
+  newMessage?:  {
+    __typename: "Message",
+    id: string,
+    content: string,
+    time: string,
+    room?:  {
+      __typename: "Room",
+      id: string,
+      name: string,
+      participants: Array< string | null >,
+      requireInvite: boolean,
+      aesKey: string,
       creator: string,
       creatorSub: string,
       messages?:  {

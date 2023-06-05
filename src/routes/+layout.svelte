@@ -50,7 +50,7 @@
 	});
 </script>
 
-<div class="flex h-screen w-full flex-col bg-base-100 relative overflow-y-auto">
+<div class="flex h-screen w-full flex-col bg-base-100 relative overflow-y-auto overflow-x-hidden">
 	{#if $user}
 		<NavBar />
 	{/if}

@@ -1,11 +1,64 @@
 {
   "httpMethod": "GET",
-  "path": "/rooms",
+  "path": "/rooms/VGY3W/participants",
   "queryStringParameters": {
     "limit": "10"
   },
   "headers": {
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
+    "Authorization": "eyJraWQiOiJCWFRFcjNaTHRwQVBLenpHZ09qWlRJTm5XY1JnRXhmQmpWZ2l0V0NmRFAwPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI5ZGIyOTM0YS0wNDBkLTRhZGMtYTFkZi1kMTI0MWFkZDgyY2YiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLmV1LW5vcnRoLTEuYW1hem9uYXdzLmNvbVwvZXUtbm9ydGgtMV82MTRQTEZ1UzciLCJjb2duaXRvOnVzZXJuYW1lIjoicnVkaSIsIm9yaWdpbl9qdGkiOiI3OTc3MjMxZC03OGYxLTQzZjQtYmJkYy01MzdlOGUzZDY3YjQiLCJhdWQiOiIydnM4ZWkyM2owbzluNzY1bHBkMjF2NDZidiIsImV2ZW50X2lkIjoiMGJlMGU2MWMtMWU4NC00YTBmLWI2OTktMzA3ODIwNWFkYjc5IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE2ODU5MjAzNzYsImN1c3RvbTpwcm9maWxlVXJsIjoiaHR0cHM6XC9cL2NjYzIwMjI0NS1kZXYuczMuZXUtbm9ydGgtMS5hbWF6b25hd3MuY29tXC9wdWJsaWNcL2ltYWdlc1wvcHJvZmlsZVwvMTY4NTg1OTE2MzM2NS1wcm9maWxiaWxkZS5qcGciLCJjdXN0b206ZGlzcGxheU5hbWUiOiJSdWRpaSIsImV4cCI6MTY4NTk2ODE1MCwiaWF0IjoxNjg1OTY0NTUwLCJqdGkiOiI5OTJjNjFkNy04YjM0LTQxMWMtOTg1YS0wNWEyZDEwZTQ1MzAiLCJlbWFpbCI6ImUuaGVyQGhvdG1haWwubm8ifQ.NxzGcNxOuo5IhlvgGTJ9VK-78v19_YF1CbqNT0E-exBT08GAIjPOu5C9sgDJqYE8nrfdAPAnKPUtJ4I8zErC53CAjQYNzQ88dUQYyfjFv6DNxTRXOFL4VHS5nyrD1rKZIMlaD7joqFrwHBks2JTRZD6Csb1xP9Qt5x9dAqyVSkW6hrb6mF2YgCP9FBl9QJ3e2vh-n02lVLrsoYMUr9nGvPl30ZUFyocFoy0U0VDLs-LPWNx8DUwkZlj4lLSrXLcZePHKIJbLl-atiyBXP7Bo7p2MDzQWOd25tFKIIiDXjbCLCslzxGYYIz5Kr4U8JiuvgmTocHGUGJGKmgUpxKk_FA"
   },
+  "multiValueHeadesrs": {
+    "requestContext": {
+            "resourceId": "owrl9d",
+            "authorizer": {
+                "claims": {
+                    "sub": "9db2934a-040d-4adc-a1df-d1241add82cf",
+                    "email_verified": "true",
+                    "iss": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_614PLFuS7",
+                    "cognito:username": "rudi",
+                    "origin_jti": "7977231d-78f1-43f4-bbdc-537e8e3d67b4",
+                    "aud": "2vs8ei23j0o9n765lpd21v46bv",
+                    "event_id": "0be0e61c-1e84-4a0f-b699-3078205adb79",
+                    "token_use": "id",
+                    "auth_time": "1685920376",
+                    "custom:profileUrl": "https://ccc202245-dev.s3.eu-north-1.amazonaws.com/public/images/profile/1685859163365-profilbilde.jpg",
+                    "custom:displayName": "Rudii",
+                    "exp": "Mon Jun 05 00:12:56 UTC 2023",
+                    "iat": "Sun Jun 04 23:12:56 UTC 2023",
+                    "jti": "7a22d907-a25b-41a0-88cb-91c5bf0b04da",
+                    "email": "e.her@hotmail.no"
+                }
+            },
+            "resourcePath": "/rooms/{proxy+}",
+            "httpMethod": "POST",
+            "extendedRequestId": "GBJG-FmtAi0Fm-g=",
+            "requestTime": "04/Jun/2023:23:45:48 +0000",
+            "path": "/dev/rooms/create",
+            "accountId": "333004928696",
+            "protocol": "HTTP/1.1",
+            "stage": "dev",
+            "domainPrefix": "zf9nvk6952",
+            "requestTimeEpoch": 1685922348343,
+            "requestId": "ee2174c0-bda6-42d4-98d8-a162c9f9bc3f",
+            "identity": {
+                "cognitoIdentityPoolId": null,
+                "accountId": null,
+                "cognitoIdentityId": null,
+                "caller": null,
+                "sourceIp": "178.164.28.134",
+                "principalOrgId": null,
+                "accessKey": null,
+                "cognitoAuthenticationType": null,
+                "cognitoAuthenticationProvider": null,
+                "userArn": null,
+                "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
+                "user": null
+            },
+            "domainName": "zf9nvk6952.execute-api.eu-north-1.amazonaws.com",
+            "apiId": "zf9nvk6952"
+        },
+        "isBase64Encoded": false
+    },
   "body": "{\"msg\":\"Hello from the event.json body\"}"
 }

@@ -1,11 +1,13 @@
-import type { Handler } from 'express';
+import type { Handler, Request } from 'express';
+import Joi from 'joi';
+import { Request_SendMessage, Response_CreateRoom, Response_GetMessages, Response_GetRoom, Response_Participants, Response_SendMessage } from 'lib/shared/rooms';
 import type { VerifiedReq } from 'lib/src/middleware/authentication.middleware';
 import * as Nanoid from 'nanoid';
 import { executeGQLRequest } from '../../core/graphqlRequest';
-import { err } from '../../error/error';
-import { CreateRoomVariables, GQL_RESPONSE_getRoom, GetRoomVariables, createRoomMutation, getRoomQuery } from './rooms.queries';
+import { ExpressError, err } from '../../error/error';
 import { build } from '../controller.types';
-import { Response_CreateRoom, Response_GetRoom } from 'lib/shared/rooms';
+import { fetchUsersInfo } from './fetchUserInformation';
+import { CreateMessageVariables, CreateRoomVariables, GQL_RESPONSE_createMessage, GQL_RESPONSE_getMessages, GQL_RESPONSE_getRoom, GetAllMessagesAfterVariables, GetAllMessagesVariables, GetRoomData, GetRoomVariables, createMessageQuery, createRoomMutation, getAllMessagesQuery, getMessagesAfterDateQuery, getRoomQuery } from './rooms.queries';
 
 const nanoid = Nanoid.customAlphabet("1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ", 5);
 
@@ -13,9 +15,6 @@ const rooms: Handler = (req, res) => {
   res.json({ success: 'Yes', url: req.url });
 }
 
-// const createRoomBodySchema = Joi.object({
-//   username: Joi.string().required(),
-// })
 
 const createRoom = build<Response_CreateRoom>(async (req) => {
   const id = nanoid(5);
@@ -28,7 +27,7 @@ const createRoom = build<Response_CreateRoom>(async (req) => {
       id,
       name: `${user.displayName ?? user.username}'s room`,
       participants: [user.sub],
-      requireInvite: true
+      requireInvite: true,
     }
   })
 
@@ -45,11 +44,159 @@ const createRoom = build<Response_CreateRoom>(async (req) => {
 });
 
 const getRoomInfo = build<Response_GetRoom>(async (req) => {
+  const gqlRoomInfoResult = await getGQLRoomData(req);
+
+  if (!gqlRoomInfoResult.success) {
+    return gqlRoomInfoResult.error;
+  }
+
+  const { roomData } = gqlRoomInfoResult.data;
+
+  return {
+    data: {
+      creator: roomData.creator,
+      name: roomData.name,
+      requireInvite: roomData.requireInvite,
+      createdAt: roomData.createdAt,
+      roomId: roomData.id
+    }
+  }
+});
+
+const getParticipants = build<Response_Participants>(async (req) => {
+  const gqlRoomInfoResult = await getGQLRoomData(req);
+
+  if (!gqlRoomInfoResult.success) {
+    return gqlRoomInfoResult.error;
+  }
+
+  const { participants } = gqlRoomInfoResult.data;
+
+  const participantsToFetch = participants
+  // .filter((p) => p !== roomData.creator)
+  // Uncomment the above line to remove the creator from the list of participants
+
+  const result = await fetchUsersInfo(participantsToFetch);
+
+  if (!result.success) {
+    return err(new Error(result.error), 500);
+  }
+
+
+  return {
+    data: {
+      participants: result.data
+    }
+  };
+});
+
+const sendMessageSchema = Joi.object({
+  timestamp: Joi.string().required(),
+  message: Joi.string().required(),
+})
+
+const sendMessage = build<Response_SendMessage>(async (req) => {
+  // Validate request body
+  const { error } = sendMessageSchema.validate(req.body);
+
+  if (error) {
+    return err(new Error(error.message), 400);
+  }
+
+  const { timestamp, message } = req.body as Request_SendMessage;
+
+  const gqlRoomInfoResult = await getGQLRoomData(req);
+
+  if (!gqlRoomInfoResult.success) {
+    return gqlRoomInfoResult.error;
+  }
+
+  const user = (req as VerifiedReq).user;
+  const { roomData } = gqlRoomInfoResult.data;
+
+  const gqlResult = await executeGQLRequest<CreateMessageVariables, GQL_RESPONSE_createMessage>(createMessageQuery, {
+    input: {
+      username: user.username,
+      time: timestamp,
+      content: message,
+      roomId: roomData.id,
+    }
+  })
+
+
+  if (!gqlResult.success) {
+    return err(new Error(gqlResult.error), 500);
+  }
+
+  const newId = gqlResult.data.data.createMessage?.id;
+
+  if (!newId) {
+    return err(new Error("Failed to create message: no id returned"), 500);
+  }
+
+  return {
+    data: {
+      messageId: newId
+    }
+  }
+});
+
+const listMessages = build<Response_GetMessages>(async (req) => {
+  const gqlRoomInfoResult = await getGQLRoomData(req);
+
+  if (!gqlRoomInfoResult.success) {
+    return gqlRoomInfoResult.error;
+  }
+
+  const { roomData } = gqlRoomInfoResult.data;
+
+  const messagesVariables = {
+    roomId: roomData.id,
+    limit: req.query.limit ? Number(req.query.limit) : 100,
+  }
+
+  const after = req.query.after;
+
+  if (typeof after === "string" && !isNaN(Date.parse(after))) {
+    return err(new Error("Invalid after date"), 400);
+  }
+
+  const gqlResult = await (after ?
+    executeGQLRequest<GetAllMessagesAfterVariables, GQL_RESPONSE_getMessages>(getMessagesAfterDateQuery, {
+      ...messagesVariables,
+      after: after as string,
+    })
+    :
+    executeGQLRequest<GetAllMessagesVariables, GQL_RESPONSE_getMessages>(getAllMessagesQuery, messagesVariables)
+  )
+
+  if (!gqlResult.success) {
+    return err(new Error(gqlResult.error), 500);
+  }
+
+  return {
+    data: {
+      messages: gqlResult.data.data.messagesByRoomIdAndTime.items
+    }
+  }
+});
+
+
+export type getGqlRoomDataResult = {
+  success: true,
+  data: { roomData: GetRoomData, participants: string[] }
+} |
+{
+  success: false,
+  error: ExpressError,
+}
+
+async function getGQLRoomData(req: Request): Promise<getGqlRoomDataResult> {
   const user = (req as VerifiedReq).user;
   const roomId = req.params.roomId;
 
   if (!roomId) {
-    return err(new Error("No room id provided"), 400);
+    return { success: false, error: err(new Error("No room id provided"), 400) };
   }
 
   // Fetch room info using GQL
@@ -57,39 +204,39 @@ const getRoomInfo = build<Response_GetRoom>(async (req) => {
     id: roomId
   });
 
-  console.log(gqlResult);
-
   if (!gqlResult.success) {
-    return err(new Error(gqlResult.error), 500);
+    return { success: false, error: err(new Error(gqlResult.error), 500) };
   }
 
   const gqlData = gqlResult.data.data.getRoom;
 
   if (!gqlData) {
-    return err(new Error("Room not found"), 404);
+    return { success: false, error: err(new Error("Room not found"), 404) };
   }
 
-  const participantSubs = gqlData.participants.map((p) => p.S);
+  const participantSubs = gqlData.participants
 
-  if (participantSubs.includes(user.sub)) {
-    return err(new Error("You are not a participant of this room"), 403);
+  if (!participantSubs.includes(user.sub)) {
+    return { success: false, error: err(new Error("You are not a participant of this room"), 403) };
   };
 
   return {
+    success: true,
     data: {
-      creator: gqlData.creator,
-      name: gqlData.name,
-      participants: participantSubs,
-      requireInvite: gqlData.requireInvite,
-      createdAt: gqlData.createdAt
+      roomData: gqlData,
+      participants: participantSubs
     }
   }
-});
+}
+
 
 
 export {
   rooms,
   createRoom,
   getRoomInfo,
+  getParticipants,
+  listMessages,
+  sendMessage
 };
 

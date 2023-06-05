@@ -68,4 +68,4 @@ function getQueryHttpRequest(query: string, endpoint: URL, variables: object | u
   })
 }
 
-
+export type AWSDateTime = string;

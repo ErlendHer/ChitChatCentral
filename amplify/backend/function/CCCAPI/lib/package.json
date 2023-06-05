@@ -9,6 +9,7 @@
     "build": "tsc"
   },
   "devDependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.345.0",
     "@types/aws-lambda": "^8.10.92",
     "@types/aws-serverless-express": "^3.3.5",
     "@types/body-parser": "^1.19.2",
@@ -18,7 +19,5 @@
     "express": "^4.15.2",
     "joi": "^17.9.2",
     "nanoid": "3.3.4"
-  },
-  "dependencies": {
   }
 }

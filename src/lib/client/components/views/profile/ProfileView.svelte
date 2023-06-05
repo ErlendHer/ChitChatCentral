@@ -18,8 +18,6 @@
 	export let user: CognitoUser;
 	export let userInfo: UserInfo;
 
-	$: console.log(userInfo);
-
 	let imageFileInput: HTMLInputElement | undefined;
 	let uploadLoading = false;
 	let waitingForImageUpdate = false;

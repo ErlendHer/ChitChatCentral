@@ -1,10 +1,14 @@
 <script lang="ts">
+	import { userInfo } from '$lib/client/auth/auth';
 	import IconFa from '$lib/client/components/common/IconFa.svelte';
 	import SimpleLoadingSpinner from '$lib/client/components/common/SimpleLoadingSpinner.svelte';
+	import WrapWithAuth from '$lib/client/components/common/WrapWithAuth.svelte';
 	import RoomError from '$lib/client/components/views/rooms/RoomError.svelte';
+	import type { RoomInfo } from '$lib/client/components/views/rooms/RoomView.svelte';
+	import RoomView from '$lib/client/components/views/rooms/RoomView.svelte';
 	import { openSuccessToast } from '$lib/client/toast';
 	import { cccApiGET } from '$lib/client/utils/apiUtils';
-	import type { RoomsResponses } from '@cccApi/rooms';
+	import type { Response_GetRoom, RoomsResponses } from '@cccApi/rooms';
 	import { faWarning } from '@fortawesome/free-solid-svg-icons';
 	import { API } from 'aws-amplify';
 	import { onMount } from 'svelte';
@@ -21,6 +25,8 @@
 	let unauthorized = false;
 	let roomNotFound = false;
 
+	let roomInfo: RoomInfo | undefined = undefined;
+
 	async function loadRoomInfo() {
 		roomInfoLoading = true;
 		unauthorized = false;
@@ -28,21 +34,22 @@
 		roomInfoFetchError = undefined;
 
 		try {
-			const roomInfo = await cccApiGET<RoomsResponses['[id]']>(`/rooms/${roomId}`);
-			if (!roomInfo.success) {
-				if (roomInfo.error.statusCode === 401 || roomInfo.error.statusCode === 403) {
+			const roomInfoResult = await cccApiGET<RoomsResponses['[id]']>(`/rooms/${roomId}`);
+			if (!roomInfoResult.success) {
+				if (roomInfoResult.error.statusCode === 401 || roomInfoResult.error.statusCode === 403) {
 					unauthorized = true;
 					return;
 				}
 
-				if (roomInfo.error.statusCode === 404) {
+				if (roomInfoResult.error.statusCode === 404) {
 					roomNotFound = true;
 					return;
 				}
 
-				throw new Error(roomInfo.error.messageWithCode);
+				throw new Error(roomInfoResult.error.messageWithCode);
 			}
 			openSuccessToast('Room joined successfully');
+			roomInfo = roomInfoResult.data.data;
 		} catch (err) {
 			roomInfoFetchError = `${(err as Error).message}`;
 		} finally {
@@ -55,7 +62,7 @@
 	});
 </script>
 
-<div class="flex flex-col items-center w-full">
+<div class="flex flex-col items-center w-full h-full">
 	{#if roomInfoLoading}
 		<div class="flex flex-col gap-2 items-center">
 			<SimpleLoadingSpinner size="large" />
@@ -70,7 +77,11 @@
 		/>
 	{:else if roomInfoFetchError}
 		<RoomError message="Failed to join room 😭" error={roomInfoFetchError} />
+	{:else if roomInfo}
+		<WrapWithAuth let:user>
+			<RoomView {roomInfo} {user} />
+		</WrapWithAuth>
 	{:else}
-		<div>Room</div>
+		<RoomError message="Failed to join room 😭" error="Unknown error" />
 	{/if}
 </div>

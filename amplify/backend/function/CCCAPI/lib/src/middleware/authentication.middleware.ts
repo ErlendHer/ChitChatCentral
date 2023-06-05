@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { err } from "../error/error";
 
-
 interface Authorizer {
   claims: {
     sub: string;
@@ -37,9 +36,6 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
       email: claims.email,
     };
     (req as VerifiedReq).jwt = `${authHeader}`;
-
-    console.log("user:", (req as VerifiedReq).user);
-    console.log("jwt:", (req as VerifiedReq).jwt);
     next();
   } catch (e) {
     console.error(e);
