@@ -25,5 +25,5 @@ export function err<T extends Error>(error: T, status?: number) {
 }
 
 export function isExpressError(error: unknown): error is ExpressError {
-  return (error as Error).message !== undefined && (error as ExpressError).status !== undefined;
+  return error instanceof Error && (error as Error).message !== undefined && (error as ExpressError).status !== undefined;
 }

@@ -1,4 +1,5 @@
-export const createRoomMutation = `mutation CreateRoom($input: CreateRoomInput!) {
+export const createRoomMutation = `
+mutation CreateRoom($input: CreateRoomInput!) {
   createRoom(input: $input) {
     id
     name
@@ -6,7 +7,8 @@ export const createRoomMutation = `mutation CreateRoom($input: CreateRoomInput!)
     requireInvite
     creator
   }
-}`;
+}
+`;
 
 export interface CreateRoomVariables {
   input: {
@@ -15,5 +17,32 @@ export interface CreateRoomVariables {
     participants: string[];
     requireInvite: boolean;
     creator: string;
+    creatorSub: string;
   }
+}
+
+export const getRoomQuery = `
+query GetRoom($id: ID!) {
+  getRoom(id: $id) {
+    creator
+    name
+    participants
+    requireInvite
+    createdAt
+  }
+}
+`;
+
+export interface GQL_RESPONSE_getRoom {
+  getRoom?: {
+    creator: string;
+    name: string;
+    participants: string[];
+    requireInvite: boolean;
+    createdAt: string;
+  }
+}
+
+export interface GetRoomVariables {
+  id: string;
 }

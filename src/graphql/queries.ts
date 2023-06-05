@@ -10,6 +10,7 @@ export const getRoom = /* GraphQL */ `
       participants
       requireInvite
       creator
+      creatorSub
       messages {
         items {
           id
@@ -24,7 +25,6 @@ export const getRoom = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -49,12 +49,12 @@ export const listRooms = /* GraphQL */ `
         participants
         requireInvite
         creator
+        creatorSub
         messages {
           nextToken
         }
         createdAt
         updatedAt
-        owner
       }
       nextToken
     }
@@ -81,12 +81,12 @@ export const roomsByUsername = /* GraphQL */ `
         participants
         requireInvite
         creator
+        creatorSub
         messages {
           nextToken
         }
         createdAt
         updatedAt
-        owner
       }
       nextToken
     }
@@ -104,12 +104,12 @@ export const getMessage = /* GraphQL */ `
         participants
         requireInvite
         creator
+        creatorSub
         messages {
           nextToken
         }
         createdAt
         updatedAt
-        owner
       }
       roomId
       username
@@ -135,9 +135,9 @@ export const listMessages = /* GraphQL */ `
           participants
           requireInvite
           creator
+          creatorSub
           createdAt
           updatedAt
-          owner
         }
         roomId
         username
@@ -173,9 +173,9 @@ export const messagesByRoomId = /* GraphQL */ `
           participants
           requireInvite
           creator
+          creatorSub
           createdAt
           updatedAt
-          owner
         }
         roomId
         username

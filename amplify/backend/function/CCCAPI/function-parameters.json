@@ -1,18 +1,18 @@
 {
   "permissions": {
+    "api": {
+      "ccc": [
+        "Query",
+        "Mutation",
+        "Subscription"
+      ]
+    },
     "auth": {
       "ccc": [
         "create",
         "read",
         "update",
         "delete"
-      ]
-    },
-    "api": {
-      "ccc": [
-        "Query",
-        "Mutation",
-        "Subscription"
       ]
     },
     "storage": {

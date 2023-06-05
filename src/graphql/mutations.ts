@@ -13,6 +13,7 @@ export const createRoom = /* GraphQL */ `
       participants
       requireInvite
       creator
+      creatorSub
       messages {
         items {
           id
@@ -27,7 +28,6 @@ export const createRoom = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -42,6 +42,7 @@ export const updateRoom = /* GraphQL */ `
       participants
       requireInvite
       creator
+      creatorSub
       messages {
         items {
           id
@@ -56,7 +57,6 @@ export const updateRoom = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -71,6 +71,7 @@ export const deleteRoom = /* GraphQL */ `
       participants
       requireInvite
       creator
+      creatorSub
       messages {
         items {
           id
@@ -85,7 +86,6 @@ export const deleteRoom = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -104,12 +104,12 @@ export const createMessage = /* GraphQL */ `
         participants
         requireInvite
         creator
+        creatorSub
         messages {
           nextToken
         }
         createdAt
         updatedAt
-        owner
       }
       roomId
       username
@@ -133,12 +133,12 @@ export const updateMessage = /* GraphQL */ `
         participants
         requireInvite
         creator
+        creatorSub
         messages {
           nextToken
         }
         createdAt
         updatedAt
-        owner
       }
       roomId
       username
@@ -162,12 +162,12 @@ export const deleteMessage = /* GraphQL */ `
         participants
         requireInvite
         creator
+        creatorSub
         messages {
           nextToken
         }
         createdAt
         updatedAt
-        owner
       }
       roomId
       username

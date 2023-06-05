@@ -8,6 +8,7 @@ export type CreateRoomInput = {
   participants: Array< string | null >,
   requireInvite: boolean,
   creator: string,
+  creatorSub: string,
 };
 
 export type ModelRoomConditionInput = {
@@ -15,6 +16,7 @@ export type ModelRoomConditionInput = {
   participants?: ModelStringInput | null,
   requireInvite?: ModelBooleanInput | null,
   creator?: ModelStringInput | null,
+  creatorSub?: ModelStringInput | null,
   and?: Array< ModelRoomConditionInput | null > | null,
   or?: Array< ModelRoomConditionInput | null > | null,
   not?: ModelRoomConditionInput | null,
@@ -74,10 +76,10 @@ export type Room = {
   participants: Array< string | null >,
   requireInvite: boolean,
   creator: string,
+  creatorSub: string,
   messages?: ModelMessageConnection | null,
   createdAt: string,
   updatedAt: string,
-  owner?: string | null,
 };
 
 export type ModelMessageConnection = {
@@ -104,6 +106,7 @@ export type UpdateRoomInput = {
   participants?: Array< string | null > | null,
   requireInvite?: boolean | null,
   creator?: string | null,
+  creatorSub?: string | null,
 };
 
 export type DeleteRoomInput = {
@@ -162,6 +165,7 @@ export type ModelRoomFilterInput = {
   participants?: ModelStringInput | null,
   requireInvite?: ModelBooleanInput | null,
   creator?: ModelStringInput | null,
+  creatorSub?: ModelStringInput | null,
   and?: Array< ModelRoomFilterInput | null > | null,
   or?: Array< ModelRoomFilterInput | null > | null,
   not?: ModelRoomFilterInput | null,
@@ -193,8 +197,10 @@ export type ModelMessageFilterInput = {
 export type ModelSubscriptionRoomFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   name?: ModelSubscriptionStringInput | null,
+  participants?: ModelSubscriptionStringInput | null,
   requireInvite?: ModelSubscriptionBooleanInput | null,
   creator?: ModelSubscriptionStringInput | null,
+  creatorSub?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionRoomFilterInput | null > | null,
   or?: Array< ModelSubscriptionRoomFilterInput | null > | null,
 };
@@ -256,6 +262,7 @@ export type CreateRoomMutation = {
     participants: Array< string | null >,
     requireInvite: boolean,
     creator: string,
+    creatorSub: string,
     messages?:  {
       __typename: "ModelMessageConnection",
       items:  Array< {
@@ -272,7 +279,6 @@ export type CreateRoomMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -289,6 +295,7 @@ export type UpdateRoomMutation = {
     participants: Array< string | null >,
     requireInvite: boolean,
     creator: string,
+    creatorSub: string,
     messages?:  {
       __typename: "ModelMessageConnection",
       items:  Array< {
@@ -305,7 +312,6 @@ export type UpdateRoomMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -322,6 +328,7 @@ export type DeleteRoomMutation = {
     participants: Array< string | null >,
     requireInvite: boolean,
     creator: string,
+    creatorSub: string,
     messages?:  {
       __typename: "ModelMessageConnection",
       items:  Array< {
@@ -338,7 +345,6 @@ export type DeleteRoomMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -360,13 +366,13 @@ export type CreateMessageMutation = {
       participants: Array< string | null >,
       requireInvite: boolean,
       creator: string,
+      creatorSub: string,
       messages?:  {
         __typename: "ModelMessageConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      owner?: string | null,
     } | null,
     roomId?: string | null,
     username: string,
@@ -393,13 +399,13 @@ export type UpdateMessageMutation = {
       participants: Array< string | null >,
       requireInvite: boolean,
       creator: string,
+      creatorSub: string,
       messages?:  {
         __typename: "ModelMessageConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      owner?: string | null,
     } | null,
     roomId?: string | null,
     username: string,
@@ -426,13 +432,13 @@ export type DeleteMessageMutation = {
       participants: Array< string | null >,
       requireInvite: boolean,
       creator: string,
+      creatorSub: string,
       messages?:  {
         __typename: "ModelMessageConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      owner?: string | null,
     } | null,
     roomId?: string | null,
     username: string,
@@ -453,6 +459,7 @@ export type GetRoomQuery = {
     participants: Array< string | null >,
     requireInvite: boolean,
     creator: string,
+    creatorSub: string,
     messages?:  {
       __typename: "ModelMessageConnection",
       items:  Array< {
@@ -469,7 +476,6 @@ export type GetRoomQuery = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -491,13 +497,13 @@ export type ListRoomsQuery = {
       participants: Array< string | null >,
       requireInvite: boolean,
       creator: string,
+      creatorSub: string,
       messages?:  {
         __typename: "ModelMessageConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      owner?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -521,13 +527,13 @@ export type RoomsByUsernameQuery = {
       participants: Array< string | null >,
       requireInvite: boolean,
       creator: string,
+      creatorSub: string,
       messages?:  {
         __typename: "ModelMessageConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      owner?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -550,13 +556,13 @@ export type GetMessageQuery = {
       participants: Array< string | null >,
       requireInvite: boolean,
       creator: string,
+      creatorSub: string,
       messages?:  {
         __typename: "ModelMessageConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      owner?: string | null,
     } | null,
     roomId?: string | null,
     username: string,
@@ -586,9 +592,9 @@ export type ListMessagesQuery = {
         participants: Array< string | null >,
         requireInvite: boolean,
         creator: string,
+        creatorSub: string,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
       } | null,
       roomId?: string | null,
       username: string,
@@ -622,9 +628,9 @@ export type MessagesByRoomIdQuery = {
         participants: Array< string | null >,
         requireInvite: boolean,
         creator: string,
+        creatorSub: string,
         createdAt: string,
         updatedAt: string,
-        owner?: string | null,
       } | null,
       roomId?: string | null,
       username: string,
@@ -637,7 +643,6 @@ export type MessagesByRoomIdQuery = {
 
 export type OnCreateRoomSubscriptionVariables = {
   filter?: ModelSubscriptionRoomFilterInput | null,
-  owner?: string | null,
 };
 
 export type OnCreateRoomSubscription = {
@@ -648,6 +653,7 @@ export type OnCreateRoomSubscription = {
     participants: Array< string | null >,
     requireInvite: boolean,
     creator: string,
+    creatorSub: string,
     messages?:  {
       __typename: "ModelMessageConnection",
       items:  Array< {
@@ -664,13 +670,11 @@ export type OnCreateRoomSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateRoomSubscriptionVariables = {
   filter?: ModelSubscriptionRoomFilterInput | null,
-  owner?: string | null,
 };
 
 export type OnUpdateRoomSubscription = {
@@ -681,6 +685,7 @@ export type OnUpdateRoomSubscription = {
     participants: Array< string | null >,
     requireInvite: boolean,
     creator: string,
+    creatorSub: string,
     messages?:  {
       __typename: "ModelMessageConnection",
       items:  Array< {
@@ -697,13 +702,11 @@ export type OnUpdateRoomSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteRoomSubscriptionVariables = {
   filter?: ModelSubscriptionRoomFilterInput | null,
-  owner?: string | null,
 };
 
 export type OnDeleteRoomSubscription = {
@@ -714,6 +717,7 @@ export type OnDeleteRoomSubscription = {
     participants: Array< string | null >,
     requireInvite: boolean,
     creator: string,
+    creatorSub: string,
     messages?:  {
       __typename: "ModelMessageConnection",
       items:  Array< {
@@ -730,7 +734,6 @@ export type OnDeleteRoomSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    owner?: string | null,
   } | null,
 };
 
@@ -752,13 +755,13 @@ export type OnCreateMessageSubscription = {
       participants: Array< string | null >,
       requireInvite: boolean,
       creator: string,
+      creatorSub: string,
       messages?:  {
         __typename: "ModelMessageConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      owner?: string | null,
     } | null,
     roomId?: string | null,
     username: string,
@@ -785,13 +788,13 @@ export type OnUpdateMessageSubscription = {
       participants: Array< string | null >,
       requireInvite: boolean,
       creator: string,
+      creatorSub: string,
       messages?:  {
         __typename: "ModelMessageConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      owner?: string | null,
     } | null,
     roomId?: string | null,
     username: string,
@@ -818,13 +821,13 @@ export type OnDeleteMessageSubscription = {
       participants: Array< string | null >,
       requireInvite: boolean,
       creator: string,
+      creatorSub: string,
       messages?:  {
         __typename: "ModelMessageConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      owner?: string | null,
     } | null,
     roomId?: string | null,
     username: string,

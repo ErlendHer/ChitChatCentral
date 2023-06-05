@@ -1,16 +1,35 @@
+import * as crypto from '@aws-crypto/sha256-js';
+import { defaultProvider } from '@aws-sdk/credential-provider-node';
+import { HttpRequest } from '@aws-sdk/protocol-http';
+import { SignatureV4 } from '@aws-sdk/signature-v4';
 import type { Result } from "@shared/execution";
+
+const { Sha256 } = crypto;
 
 const GRAPHQL_ENDPOINT = process.env.API_CCC_GRAPHQLAPIENDPOINTOUTPUT ?? '';
 const GRAPHQL_APIKEY = process.env.API_CCC_GRAPHQLAPIKEYOUTPUT ?? '';
+const AWS_REGION = process.env.AWS_REGION ?? 'eu-north-1';
+
+const signer = new SignatureV4({
+  credentials: defaultProvider(),
+  region: AWS_REGION,
+  service: 'appsync',
+  sha256: Sha256,
+});
 
 interface GraphQLResponse<T> {
   data: T;
   errors?: unknown[];
 }
 
-export async function executeGQLRequest<T extends object>(query: string, variables: T | undefined = undefined): Promise<Result<unknown>> {
+export async function executeGQLRequest<T extends object, V = undefined>(query: string, variables: T | undefined = undefined): Promise<Result<GraphQLResponse<V>>> {
   try {
-    const request = new Request(GRAPHQL_ENDPOINT, getQueryBody(query, variables));
+    const endpoint = new URL(GRAPHQL_ENDPOINT);
+    const requestToSign = getQueryHttpRequest(query, endpoint, variables);
+
+    const signed = await signer.sign(requestToSign);
+    const request = new Request(GRAPHQL_ENDPOINT, signed);
+
     const response = await fetch(request);
 
     if (response.status !== 200) {
@@ -25,7 +44,7 @@ export async function executeGQLRequest<T extends object>(query: string, variabl
 
     return {
       success: true,
-      data: responseData.data
+      data: responseData.data as GraphQLResponse<V>
     }
   } catch (error) {
     console.error(error);
@@ -36,15 +55,17 @@ export async function executeGQLRequest<T extends object>(query: string, variabl
   }
 }
 
-function getQueryBody(query: string, variables: object | undefined = undefined) {
-  return {
+function getQueryHttpRequest(query: string, endpoint: URL, variables: object | undefined = undefined) {
+  return new HttpRequest({
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': GRAPHQL_APIKEY
+      host: endpoint.host
     },
+    hostname: endpoint.host,
+    path: endpoint.pathname,
     body: JSON.stringify({ query, ...(variables && { variables }) })
-  }
+  })
 }
 
 

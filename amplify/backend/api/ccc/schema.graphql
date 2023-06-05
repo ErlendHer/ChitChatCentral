@@ -12,7 +12,7 @@
 type Room 
   @model
   @auth(rules: [
-    { allow: private, provider: iam,}, 
+    { allow: private, provider: iam}, 
     { allow: private, ownerField: "participants", operations: [read]}
   ]
   ) {
@@ -22,6 +22,7 @@ type Room
   requireInvite: Boolean! 
   creator: String! 
     @index(name: "byUser", queryField: "roomsByUsername")
+  creatorSub: String!,
   messages: [Message] @hasMany(indexName: "byRoom", fields: ["id"]) 
 }
 
@@ -29,6 +30,7 @@ type Message
   @model 
   @auth(
     rules: [
+      { allow: private, provider: iam}, 
       { allow: owner, ownerField: "username" }
     ]
   )

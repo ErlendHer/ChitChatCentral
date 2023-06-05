@@ -24,7 +24,7 @@
         },
         "CCCAPI": {
           "deploymentBucketName": "amplify-chitchatcentral-dev-202245-deployment",
-          "s3Key": "amplify-builds/CCCAPI-2b6f51462b4845517673-build.zip"
+          "s3Key": "amplify-builds/CCCAPI-6559355a776464766e36-build.zip"
         },
         "OnProfilePictureUpload": {
           "deploymentBucketName": "amplify-chitchatcentral-dev-202245-deployment",

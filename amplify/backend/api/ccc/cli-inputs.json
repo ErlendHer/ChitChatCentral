@@ -6,13 +6,16 @@
     "defaultAuthType": {
       "mode": "API_KEY",
       "expirationTime": 365,
-      "apiKeyExpirationDate": "2024-06-02T18:26:02.247Z",
+      "apiKeyExpirationDate": "2024-06-04T00:26:05.884Z",
       "keyDescription": "Public CCC api key"
     },
     "additionalAuthTypes": [
       {
         "mode": "AMAZON_COGNITO_USER_POOLS",
         "cognitoUserPoolId": "authccc"
+      },
+      {
+        "mode": "AWS_IAM"
       }
     ],
     "conflictResolution": {}

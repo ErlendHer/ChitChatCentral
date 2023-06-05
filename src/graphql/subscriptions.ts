@@ -3,16 +3,14 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateRoom = /* GraphQL */ `
-  subscription OnCreateRoom(
-    $filter: ModelSubscriptionRoomFilterInput
-    $owner: String
-  ) {
-    onCreateRoom(filter: $filter, owner: $owner) {
+  subscription OnCreateRoom($filter: ModelSubscriptionRoomFilterInput) {
+    onCreateRoom(filter: $filter) {
       id
       name
       participants
       requireInvite
       creator
+      creatorSub
       messages {
         items {
           id
@@ -27,21 +25,18 @@ export const onCreateRoom = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
 export const onUpdateRoom = /* GraphQL */ `
-  subscription OnUpdateRoom(
-    $filter: ModelSubscriptionRoomFilterInput
-    $owner: String
-  ) {
-    onUpdateRoom(filter: $filter, owner: $owner) {
+  subscription OnUpdateRoom($filter: ModelSubscriptionRoomFilterInput) {
+    onUpdateRoom(filter: $filter) {
       id
       name
       participants
       requireInvite
       creator
+      creatorSub
       messages {
         items {
           id
@@ -56,21 +51,18 @@ export const onUpdateRoom = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
 export const onDeleteRoom = /* GraphQL */ `
-  subscription OnDeleteRoom(
-    $filter: ModelSubscriptionRoomFilterInput
-    $owner: String
-  ) {
-    onDeleteRoom(filter: $filter, owner: $owner) {
+  subscription OnDeleteRoom($filter: ModelSubscriptionRoomFilterInput) {
+    onDeleteRoom(filter: $filter) {
       id
       name
       participants
       requireInvite
       creator
+      creatorSub
       messages {
         items {
           id
@@ -85,7 +77,6 @@ export const onDeleteRoom = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      owner
     }
   }
 `;
@@ -104,12 +95,12 @@ export const onCreateMessage = /* GraphQL */ `
         participants
         requireInvite
         creator
+        creatorSub
         messages {
           nextToken
         }
         createdAt
         updatedAt
-        owner
       }
       roomId
       username
@@ -133,12 +124,12 @@ export const onUpdateMessage = /* GraphQL */ `
         participants
         requireInvite
         creator
+        creatorSub
         messages {
           nextToken
         }
         createdAt
         updatedAt
-        owner
       }
       roomId
       username
@@ -162,12 +153,12 @@ export const onDeleteMessage = /* GraphQL */ `
         participants
         requireInvite
         creator
+        creatorSub
         messages {
           nextToken
         }
         createdAt
         updatedAt
-        owner
       }
       roomId
       username

@@ -2,6 +2,38 @@
 # yarn lockfile v1
 
 
+"@aws-crypto/sha256-js@^4.0.0":
+  "integrity" "sha512-MHGJyjE7TX9aaqXj7zk2ppnFUOhaDs5sP+HtNS0evOxn72c+5njUmyJmpGd7TfyoDznZlHMmdo/xGUdu2NIjNQ=="
+  "resolved" "https://registry.npmjs.org/@aws-crypto/sha256-js/-/sha256-js-4.0.0.tgz"
+  "version" "4.0.0"
+  dependencies:
+    "@aws-crypto/util" "^4.0.0"
+    "@aws-sdk/types" "^3.222.0"
+    "tslib" "^1.11.1"
+
+"@aws-crypto/util@^4.0.0":
+  "integrity" "sha512-2EnmPy2gsFZ6m8bwUQN4jq+IyXV3quHAcwPOS6ZA3k+geujiqI8aRokO2kFJe+idJ/P3v4qWI186rVMo0+zLDQ=="
+  "resolved" "https://registry.npmjs.org/@aws-crypto/util/-/util-4.0.0.tgz"
+  "version" "4.0.0"
+  dependencies:
+    "@aws-sdk/types" "^3.222.0"
+    "@aws-sdk/util-utf8-browser" "^3.0.0"
+    "tslib" "^1.11.1"
+
+"@aws-sdk/types@^3.222.0":
+  "integrity" "sha512-5uyXVda/AgUpdZNJ9JPHxwyxr08miPiZ/CKSMcRdQVjcNnrdzY9m/iM9LvnQT44sQO+IEEkF2IoZIWvZcq199A=="
+  "resolved" "https://registry.npmjs.org/@aws-sdk/types/-/types-3.342.0.tgz"
+  "version" "3.342.0"
+  dependencies:
+    "tslib" "^2.5.0"
+
+"@aws-sdk/util-utf8-browser@^3.0.0":
+  "integrity" "sha512-UvFa/vR+e19XookZF8RzFZBrw2EUkQWxiBW0yYQAhvk3C+QVGl0H3ouca8LDBlBfQKXwmW3huo/59H8rwb1wJw=="
+  "resolved" "https://registry.npmjs.org/@aws-sdk/util-utf8-browser/-/util-utf8-browser-3.259.0.tgz"
+  "version" "3.259.0"
+  dependencies:
+    "tslib" "^2.3.1"
+
 "@hapi/hoek@^9.0.0":
   "integrity" "sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ=="
   "resolved" "https://registry.npmjs.org/@hapi/hoek/-/hoek-9.3.0.tgz"
@@ -486,6 +518,21 @@
   "integrity" "sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA=="
   "resolved" "https://registry.npmjs.org/toidentifier/-/toidentifier-1.0.1.tgz"
   "version" "1.0.1"
+
+"tslib@^1.11.1":
+  "integrity" "sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg=="
+  "resolved" "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
+  "version" "1.14.1"
+
+"tslib@^2.3.1":
+  "integrity" "sha512-mSxlJJwl3BMEQCUNnxXBU9jP4JBktcEGhURcPR6VQVlnP0FdDEsIaz0C35dXNGLyRfrATNofF0F5p2KPxQgB+w=="
+  "resolved" "https://registry.npmjs.org/tslib/-/tslib-2.5.3.tgz"
+  "version" "2.5.3"
+
+"tslib@^2.5.0":
+  "integrity" "sha512-mSxlJJwl3BMEQCUNnxXBU9jP4JBktcEGhURcPR6VQVlnP0FdDEsIaz0C35dXNGLyRfrATNofF0F5p2KPxQgB+w=="
+  "resolved" "https://registry.npmjs.org/tslib/-/tslib-2.5.3.tgz"
+  "version" "2.5.3"
 
 "type-is@^1.6.16", "type-is@~1.6.18":
   "integrity" "sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g=="

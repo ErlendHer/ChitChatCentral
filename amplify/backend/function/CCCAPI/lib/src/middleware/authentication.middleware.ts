@@ -3,7 +3,12 @@ import { err } from "../error/error";
 
 
 interface Authorizer {
-  claims: User,
+  claims: {
+    sub: string;
+    "cognito:username": string;
+    "custom:displayName": string;
+    email: string;
+  },
 }
 
 export interface User {
@@ -19,12 +24,18 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
   try {
     const authHeader = req.header('authorization');
 
-    const authorizer = req.apiGateway?.event.requestContext.authorizer as Authorizer;
+    const claims = (req.apiGateway?.event.requestContext.authorizer as Authorizer).claims;
 
-    if (!authorizer) {
-      throw new Error("No authorizer found");
+    if (!claims) {
+      throw new Error("No authorizer claims found");
     }
-    (req as VerifiedReq).user = authorizer.claims;
+
+    (req as VerifiedReq).user = {
+      sub: claims.sub,
+      username: claims["cognito:username"],
+      displayName: claims["custom:displayName"],
+      email: claims.email,
+    };
     (req as VerifiedReq).jwt = `${authHeader}`;
 
     console.log("user:", (req as VerifiedReq).user);
