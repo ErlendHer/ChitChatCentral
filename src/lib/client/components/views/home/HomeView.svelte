@@ -1,32 +1,27 @@
 <script lang="ts">
-	import { getIdToken, type UserInfo } from '$lib/client/auth/auth';
+	import { goto } from '$app/navigation';
 	import IconButtonWithLoadingSpinner from '$lib/client/components/common/IconButtonWithLoadingSpinner.svelte';
 	import { openErrorToast, openSuccessToast } from '$lib/client/toast';
-	import type { CognitoUser } from '@aws-amplify/auth';
+	import { cccApiPOST } from '$lib/client/utils/apiUtils';
+	import type { RoomsResponses } from '@cccApi/rooms';
 	import { faAnglesRight, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
-	import { API } from 'aws-amplify';
 	import InputWithErrorMessage from '../../common/InputWithErrorMessage.svelte';
-
-	export let userInfo: UserInfo;
 
 	let createRoomLoading = false;
 
 	async function createRoom() {
 		try {
 			createRoomLoading = true;
-
-			console.log('GetIdToken: ' + getIdToken());
-
-			const result = await API.post('cccapi', '/rooms/create', {
-				body: { username: 'user123' },
-				headers: { Authorization: `${await getIdToken()}` }
-			});
-
-			console.log(result);
-			openSuccessToast(`Created room ${result.roomId}`);
+			const roomsResult = await cccApiPOST<RoomsResponses['create']>('/rooms/create');
+			if (!roomsResult.success) {
+				throw new Error(roomsResult.error.messageWithCode);
+			}
+			const roomId = roomsResult.data.data.roomId;
+			openSuccessToast(`Created room ${roomId}`);
+			goto(`/rooms/${roomId}`);
 		} catch (err) {
 			console.error(err);
-			openErrorToast(`Failed to create room: ${err}`);
+			openErrorToast(`Failed to create room: ${(err as Error).message}`);
 		} finally {
 			createRoomLoading = false;
 		}
