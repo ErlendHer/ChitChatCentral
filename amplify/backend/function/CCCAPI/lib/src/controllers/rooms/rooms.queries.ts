@@ -1,13 +1,23 @@
 import { AWSDateTime } from "lib/src/core/graphqlRequest";
 
+
+/**
+ * **NOTE** All available fields in the query MUST be returned for the subscription to trigger.
+ * Do not remove any of the fields, the app will break.
+ * https://docs.aws.amazon.com/appsync/latest/devguide/aws-appsync-real-time-data.html
+ */
 export const createRoomMutation = `
 mutation CreateRoom($input: CreateRoomInput!) {
   createRoom(input: $input) {
+    createdAt
+    creator
+    creatorSub
     id
     name
     participants
     requireInvite
-    creator
+    secret
+    updatedAt
   }
 }
 `;
@@ -20,6 +30,7 @@ export interface CreateRoomVariables {
     requireInvite: boolean;
     creator: string;
     creatorSub: string;
+    secret: string;
   }
 }
 
@@ -32,6 +43,7 @@ query GetRoom($id: ID!) {
     participants
     requireInvite
     createdAt
+    secret
   }
 }
 `;
@@ -43,6 +55,7 @@ export interface GetRoomData {
   participants: string[];
   requireInvite: boolean;
   createdAt: string;
+  secret: string;
 }
 
 export interface GQL_RESPONSE_getRoom {
@@ -57,6 +70,12 @@ export const createMessageQuery = `
 mutation CreateMessage($input: CreateMessageInput!) {
   createMessage(input: $input) {
     id
+    roomId
+    createdAt
+    username
+    content
+    time
+    updatedAt
   }
 }
 `
@@ -72,6 +91,12 @@ export interface CreateMessageVariables {
 export interface GQL_RESPONSE_createMessage {
   createMessage?: {
     id: string;
+    roomId: string;
+    createdAt: string;
+    username: string;
+    content: string;
+    time: string;
+    updatedAt: string;
   }
 }
 

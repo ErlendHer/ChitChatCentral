@@ -8,6 +8,7 @@
   "dependencies": {
     "@aws-crypto/sha256-js": "^4.0.0",
     "@aws-sdk/client-cognito-identity-provider": "^3.345.0",
+    "aws-iot-device-sdk": "^2.2.12",
     "aws-serverless-express": "^3.3.5",
     "body-parser": "^1.17.1",
     "express": "^4.15.2",

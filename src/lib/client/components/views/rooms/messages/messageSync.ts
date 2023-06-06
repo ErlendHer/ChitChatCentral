@@ -4,8 +4,8 @@ import type { Response_GetMessages, RoomsResponses } from "@cccApi/rooms";
 import { API, graphqlOperation } from "aws-amplify";
 import { nanoid } from "nanoid";
 import { writable, type Writable } from "svelte/store";
-import type { NewMessageSubscription } from "../../../../../API";
-import { newMessage } from "../../../../../graphql/subscriptions";
+import type { NewMessageSubscription } from "../../../../../../API";
+import { newMessage } from "../../../../../../graphql/subscriptions";
 
 export interface Message {
   readonly id: string;

@@ -20,6 +20,7 @@ type Room
   name: String! 
   participants: [String]!
   requireInvite: Boolean!
+  secret: String!
   creator: String! 
     @index(name: "byUser", queryField: "roomsByUsername")
   creatorSub: String!,
@@ -31,6 +32,7 @@ type Message
   @auth(
     rules: [
       { allow: private, provider: iam}, 
+      { allow: private, operations: [read]}
       { allow: owner, ownerField: "username" }
     ]
   )

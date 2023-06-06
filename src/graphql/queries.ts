@@ -9,7 +9,7 @@ export const getRoom = /* GraphQL */ `
       name
       participants
       requireInvite
-      aesKey
+      secret
       creator
       creatorSub
       messages {
@@ -49,7 +49,7 @@ export const listRooms = /* GraphQL */ `
         name
         participants
         requireInvite
-        aesKey
+        secret
         creator
         creatorSub
         messages {
@@ -82,7 +82,7 @@ export const roomsByUsername = /* GraphQL */ `
         name
         participants
         requireInvite
-        aesKey
+        secret
         creator
         creatorSub
         messages {
@@ -106,7 +106,7 @@ export const getMessage = /* GraphQL */ `
         name
         participants
         requireInvite
-        aesKey
+        secret
         creator
         creatorSub
         messages {
@@ -146,7 +146,7 @@ export const listMessages = /* GraphQL */ `
           name
           participants
           requireInvite
-          aesKey
+          secret
           creator
           creatorSub
           createdAt
@@ -187,7 +187,7 @@ export const messagesByRoomIdAndTime = /* GraphQL */ `
           name
           participants
           requireInvite
-          aesKey
+          secret
           creator
           creatorSub
           createdAt

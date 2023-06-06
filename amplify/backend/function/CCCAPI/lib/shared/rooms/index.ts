@@ -11,6 +11,7 @@ export type Response_GetRoom = {
   requireInvite: boolean;
   createdAt: string;
   roomId: string;
+  secret: string;
 }
 
 export interface UserInfo {
@@ -25,6 +26,10 @@ export type Response_Participants = {
 
 export type Response_SendMessage = {
   messageId: string;
+  roomId: string;
+  time: string;
+  username: string;
+  content: string;
 }
 
 export type Response_GetMessages = {

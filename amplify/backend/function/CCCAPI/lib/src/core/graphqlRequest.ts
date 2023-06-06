@@ -7,7 +7,6 @@ import type { Result } from "@shared/execution";
 const { Sha256 } = crypto;
 
 const GRAPHQL_ENDPOINT = process.env.API_CCC_GRAPHQLAPIENDPOINTOUTPUT ?? '';
-const GRAPHQL_APIKEY = process.env.API_CCC_GRAPHQLAPIKEYOUTPUT ?? '';
 const AWS_REGION = process.env.AWS_REGION ?? 'eu-north-1';
 
 const signer = new SignatureV4({

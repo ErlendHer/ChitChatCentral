@@ -9,7 +9,7 @@ export const onCreateRoom = /* GraphQL */ `
       name
       participants
       requireInvite
-      aesKey
+      secret
       creator
       creatorSub
       messages {
@@ -36,7 +36,7 @@ export const onUpdateRoom = /* GraphQL */ `
       name
       participants
       requireInvite
-      aesKey
+      secret
       creator
       creatorSub
       messages {
@@ -63,7 +63,7 @@ export const onDeleteRoom = /* GraphQL */ `
       name
       participants
       requireInvite
-      aesKey
+      secret
       creator
       creatorSub
       messages {
@@ -97,7 +97,7 @@ export const onCreateMessage = /* GraphQL */ `
         name
         participants
         requireInvite
-        aesKey
+        secret
         creator
         creatorSub
         messages {
@@ -127,7 +127,7 @@ export const onUpdateMessage = /* GraphQL */ `
         name
         participants
         requireInvite
-        aesKey
+        secret
         creator
         creatorSub
         messages {
@@ -157,7 +157,7 @@ export const onDeleteMessage = /* GraphQL */ `
         name
         participants
         requireInvite
-        aesKey
+        secret
         creator
         creatorSub
         messages {
@@ -184,7 +184,7 @@ export const newMessage = /* GraphQL */ `
         name
         participants
         requireInvite
-        aesKey
+        secret
         creator
         creatorSub
         messages {

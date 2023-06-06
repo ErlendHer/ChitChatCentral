@@ -23,6 +23,7 @@
 				<div class="font-BubbleGumSans text-lg text-center text-accent break-words">
 					{profile.displayName}
 				</div>
+				<slot />
 			</div>
 		{/each}
 	{/if}

@@ -5,23 +5,25 @@
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import {
-		getUserInfo,
-		listenForAuthChanges,
-		updateUserInfo,
-		user,
-		userInfo
-	} from '$lib/client/auth/auth';
+	import { listenForAuthChanges, updateUserInfo, user } from '$lib/client/auth/auth';
 	import NavBar from '$lib/client/components/NavBar.svelte';
+	import { AWSIoTProvider } from '@aws-amplify/pubsub';
+
 	import SimpleLoadingSpinner from '$lib/client/components/common/SimpleLoadingSpinner.svelte';
-	import type { CognitoUser } from '@aws-amplify/auth';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import { Amplify, Auth } from 'aws-amplify';
 	import { onMount } from 'svelte';
 	import awsmobile from '../aws-exports';
-	import { openErrorToast } from '$lib/client/toast';
 
 	Amplify.configure(awsmobile);
+
+	// Apply plugin with configuration
+	Amplify.addPluggable(
+		new AWSIoTProvider({
+			aws_pubsub_region: 'eu-north-1',
+			aws_pubsub_endpoint: 'wss://a1744m7l3kqoyy-ats.iot.eu-north-1.amazonaws.com/mqtt'
+		})
+	);
 
 	let mounted = false;
 

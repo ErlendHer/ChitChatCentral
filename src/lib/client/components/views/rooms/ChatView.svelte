@@ -1,33 +1,40 @@
 <script lang="ts">
 	import { openErrorToast } from '$lib/client/toast';
 	import { cccApiPOST } from '$lib/client/utils/apiUtils';
-	import type { UserInfo, Request_SendMessage, RoomsResponses } from '@cccApi/rooms';
+	import type { Request_SendMessage, RoomsResponses } from '@cccApi/rooms';
 	import { faPaperPlane, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 	import { afterUpdate, onDestroy, onMount, tick } from 'svelte';
+	import IconButtonWithLoadingSpinner from '../../common/IconButtonWithLoadingSpinner.svelte';
 	import IconFa from '../../common/IconFa.svelte';
+	import SimpleLoadingSpinner from '../../common/SimpleLoadingSpinner.svelte';
 	import ChatBubble from './ChatBubble.svelte';
 	import {
 		createMessageSync,
 		getMessages,
 		listenForNewMessages,
 		type MessageSync
-	} from './messageSync';
-	import type { ProfileInfo } from './rooms.types';
-	import SimpleLoadingSpinner from '../../common/SimpleLoadingSpinner.svelte';
-	import IconButtonWithLoadingSpinner from '../../common/IconButtonWithLoadingSpinner.svelte';
+	} from './messages/messageSync';
+	import type { ProfileInfo, RoomMessage } from './rooms.types';
+	import { roomMessage } from './messages/roomMessages.store';
 
 	export let roomId: string;
+	export let roomSecret: string;
 	export let username: string;
 	export let profileMap: Map<string, ProfileInfo>;
 
 	const messageSync = createMessageSync(username);
+
+	let messageSubscription: { unsubscribe: () => void } | undefined = undefined;
 
 	$: {
 		$messageSync;
 		scrollToBottom();
 	}
 
-	let messagesSubscription: { unsubscribe: () => void } | undefined = undefined;
+	$: if ($roomMessage) {
+		const msg = $roomMessage;
+	}
+
 	let messageToSend = '';
 
 	let syncingMessages = false;
@@ -111,13 +118,17 @@
 		chatContainer.scroll({ top: chatContainer.scrollHeight, behavior: 'smooth' });
 	};
 
+	const handleRoomMessage = (msg: RoomMessage) => {
+		if (msg.command.type !== 'message') return;
+	};
+
 	onMount(async () => {
 		await syncMessages();
-		messagesSubscription = listenForNewMessages(roomId, messageSync as MessageSync);
+		messageSubscription = listenForNewMessages(roomId, messageSync as MessageSync);
 	});
 
 	onDestroy(() => {
-		messagesSubscription?.unsubscribe();
+		messageSubscription?.unsubscribe();
 	});
 </script>
 

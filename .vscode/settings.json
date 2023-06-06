@@ -12,6 +12,7 @@
     "awsmobile",
     "daisyui",
     "fortawesome",
-    "pausable"
+    "pausable",
+    "Pluggable"
   ]
 }

@@ -1,10 +1,10 @@
 import type { Handler, Request } from 'express';
 import Joi from 'joi';
 import { Request_SendMessage, Response_CreateRoom, Response_GetMessages, Response_GetRoom, Response_Participants, Response_SendMessage } from 'lib/shared/rooms';
-import type { VerifiedReq } from 'lib/src/middleware/authentication.middleware';
 import * as Nanoid from 'nanoid';
 import { executeGQLRequest } from '../../core/graphqlRequest';
 import { ExpressError, err } from '../../error/error';
+import type { VerifiedReq } from '../../middleware/authentication.middleware';
 import { build } from '../controller.types';
 import { fetchUsersInfo } from './fetchUserInformation';
 import { CreateMessageVariables, CreateRoomVariables, GQL_RESPONSE_createMessage, GQL_RESPONSE_getMessages, GQL_RESPONSE_getRoom, GetAllMessagesAfterVariables, GetAllMessagesVariables, GetRoomData, GetRoomVariables, createMessageQuery, createRoomMutation, getAllMessagesQuery, getMessagesAfterDateQuery, getRoomQuery } from './rooms.queries';
@@ -28,6 +28,7 @@ const createRoom = build<Response_CreateRoom>(async (req) => {
       name: `${user.displayName ?? user.username}'s room`,
       participants: [user.sub],
       requireInvite: true,
+      secret: nanoid(32),
     }
   })
 
@@ -58,7 +59,8 @@ const getRoomInfo = build<Response_GetRoom>(async (req) => {
       name: roomData.name,
       requireInvite: roomData.requireInvite,
       createdAt: roomData.createdAt,
-      roomId: roomData.id
+      roomId: roomData.id,
+      secret: roomData.secret,
     }
   }
 });
@@ -81,7 +83,6 @@ const getParticipants = build<Response_Participants>(async (req) => {
   if (!result.success) {
     return err(new Error(result.error), 500);
   }
-
 
   return {
     data: {
@@ -123,20 +124,23 @@ const sendMessage = build<Response_SendMessage>(async (req) => {
     }
   })
 
-
   if (!gqlResult.success) {
     return err(new Error(gqlResult.error), 500);
   }
 
-  const newId = gqlResult.data.data.createMessage?.id;
+  const data = gqlResult.data.data.createMessage;
 
-  if (!newId) {
-    return err(new Error("Failed to create message: no id returned"), 500);
+  if (!data) {
+    return err(new Error("Failed to create message: empty GQl response"), 500);
   }
 
   return {
     data: {
-      messageId: newId
+      messageId: data.id,
+      content: data.content,
+      roomId: data.roomId,
+      time: data.time,
+      username: data.username,
     }
   }
 });

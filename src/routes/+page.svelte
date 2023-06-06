@@ -3,6 +3,6 @@
 	import HomeView from '$lib/client/components/views/home/HomeView.svelte';
 </script>
 
-<WrapWithAuth let:user let:userInfo>
-	<HomeView {userInfo} />
+<WrapWithAuth>
+	<HomeView />
 </WrapWithAuth>

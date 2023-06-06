@@ -3,19 +3,30 @@
 	import { cccApiGET } from '$lib/client/utils/apiUtils';
 	import type { CognitoUser } from '@aws-amplify/auth';
 	import type { Response_GetRoom, Response_Participants, RoomsResponses } from '@cccApi/rooms';
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import ChatViewWithProfiles from './ChatViewWithProfiles.svelte';
+	import { PubSub } from 'aws-amplify';
+	import { roomMessage } from './messages/roomMessages.store';
+	import type { RoomMessage } from './rooms.types';
 
 	export type RoomInfo = Response_GetRoom;
 	export type ParticipantInfo = Response_Participants;
 </script>
 
 <script lang="ts">
+	import IconButton from '../../common/IconButton.svelte';
+	import { faCog } from '@fortawesome/free-solid-svg-icons';
+	import ConfigurationModal from './roomConfiguration/ConfigurationModal.svelte';
+
 	export let roomInfo: RoomInfo;
 	export let user: CognitoUser;
 
 	let participantInfo: ParticipantInfo | undefined = undefined;
 	let participantsLoading = false;
+
+	let messagesSubscription: { unsubscribe: () => void } | undefined = undefined;
+
+	let configureModalOpen = false;
 
 	async function fetchRoomInfo() {
 		try {
@@ -35,7 +46,25 @@
 		}
 	}
 
+	async function listenForMessage() {
+		messagesSubscription = PubSub.subscribe(roomInfo.secret).subscribe({
+			next: (data) => {
+				$roomMessage = data.value as RoomMessage;
+			},
+			error: (error) => {
+				console.warn(error);
+			},
+			complete: () => console.log('Done')
+		});
+		console.log('Listening on', roomInfo.secret);
+	}
+
+	onDestroy(() => {
+		messagesSubscription?.unsubscribe();
+	});
+
 	onMount(async () => {
+		listenForMessage();
 		await fetchRoomInfo();
 	});
 </script>
@@ -49,5 +78,20 @@
 		{participantsLoading}
 		roomId={roomInfo.roomId}
 		username={user.getUsername()}
+		roomSecret={roomInfo.secret}
+	/>
+	<div class="block sm:absolute right-0 bottom-0 m-2">
+		<button
+			class="flex flex-col items-center font-BubbleGumSans font-bold text-accent hover:brightness-110"
+			on:click={() => (configureModalOpen = true)}
+		>
+			Configure Room
+			<IconButton icon={faCog} onClick={() => (configureModalOpen = true)} />
+		</button>
+	</div>
+	<ConfigurationModal
+		bind:open={configureModalOpen}
+		{roomInfo}
+		participants={participantInfo?.participants ?? []}
 	/>
 </div>
