@@ -145,3 +145,50 @@ export interface GQL_RESPONSE_getMessages {
     }[]
   }
 }
+
+export const updateRoomQuery = `
+mutation ToggleOpenToPublic($input: UpdateRoomInput!) {
+  updateRoom(input: $input) {
+    id
+    createdAt
+    creator
+    creatorSub
+    name
+    participants
+    requireInvite
+    updatedAt
+    secret
+  }
+}
+`;
+
+export interface ToggleOpenToPublicVariables {
+  input: {
+    id: string;
+    requireInvite: boolean;
+  }
+}
+
+
+export interface UpdateParticipantsVariables {
+  input: {
+    id: string;
+    participants: string[];
+  }
+}
+
+
+
+export interface GQL_RESPONSE_UpdateRoom {
+  updateRoom: {
+    id: string;
+    createdAt: string;
+    creator: string;
+    creatorSub: string;
+    name: string;
+    participants: string[];
+    requireInvite: boolean;
+    updatedAt: string;
+    secret: string;
+  }
+}

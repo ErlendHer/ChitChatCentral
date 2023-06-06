@@ -6,7 +6,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import ChatViewWithProfiles from './ChatViewWithProfiles.svelte';
 	import { PubSub } from 'aws-amplify';
-	import { roomMessage } from './messages/roomMessages.store';
+	import { roomMessage, triggerUpdate } from './messages/roomMessages.store';
 	import type { RoomMessage } from './rooms.types';
 
 	export type RoomInfo = Response_GetRoom;
@@ -17,6 +17,7 @@
 	import IconButton from '../../common/IconButton.svelte';
 	import { faCog } from '@fortawesome/free-solid-svg-icons';
 	import ConfigurationModal from './roomConfiguration/ConfigurationModal.svelte';
+	import { userInfo } from '$lib/client/auth/auth';
 
 	export let roomInfo: RoomInfo;
 	export let user: CognitoUser;
@@ -38,6 +39,7 @@
 			if (!roomInfoResult.success) throw new Error(roomInfoResult.error.messageWithCode);
 
 			participantInfo = roomInfoResult.data.data;
+			console.log(participantInfo);
 		} catch (err) {
 			console.error(err);
 			openErrorToast(`${(err as Error).message}`);
@@ -48,8 +50,13 @@
 
 	async function listenForMessage() {
 		messagesSubscription = PubSub.subscribe(roomInfo.secret).subscribe({
-			next: (data) => {
-				$roomMessage = data.value as RoomMessage;
+			next: async (data) => {
+				const msg = data.value as RoomMessage;
+				$roomMessage = msg;
+
+				if (msg.command.type === 'update') {
+					await fetchRoomInfo();
+				}
 			},
 			error: (error) => {
 				console.warn(error);
@@ -64,8 +71,10 @@
 	});
 
 	onMount(async () => {
-		listenForMessage();
+		// When a user joins a room, trigger an update so other users are notified
+		triggerUpdate(roomInfo.secret, roomInfo.roomId);
 		await fetchRoomInfo();
+		listenForMessage();
 	});
 </script>
 
@@ -80,15 +89,18 @@
 		username={user.getUsername()}
 		roomSecret={roomInfo.secret}
 	/>
-	<div class="block sm:absolute right-0 bottom-0 m-2">
-		<button
-			class="flex flex-col items-center font-BubbleGumSans font-bold text-accent hover:brightness-110"
-			on:click={() => (configureModalOpen = true)}
-		>
-			Configure Room
-			<IconButton icon={faCog} onClick={() => (configureModalOpen = true)} />
-		</button>
-	</div>
+	{#if roomInfo.creator === user.getUsername()}
+		<div class="block sm:absolute right-0 bottom-0 m-2">
+			<button
+				class="flex flex-col items-center font-BubbleGumSans font-bold text-accent hover:brightness-110"
+				on:click={() => (configureModalOpen = true)}
+			>
+				Configure Room
+				<IconButton icon={faCog} onClick={() => (configureModalOpen = true)} />
+			</button>
+		</div>
+	{/if}
+
 	<ConfigurationModal
 		bind:open={configureModalOpen}
 		{roomInfo}

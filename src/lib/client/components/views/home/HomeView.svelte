@@ -8,6 +8,24 @@
 	import InputWithErrorMessage from '../../common/InputWithErrorMessage.svelte';
 
 	let createRoomLoading = false;
+	let roomCode = '';
+
+	const validateRoomCode = (code: string) : string | null => {
+		if (!code || code === "") {
+			return "Room code cannot be empty";
+		}
+
+		if (!/^[a-zA-Z0-9]+$/.test(code)) {
+			return "Room code can only contain letters and numbers";
+		}
+
+		if (code.length !== 5) {
+			return "Room code must be 5 characters long";
+		}
+
+		return null;
+	}
+
 
 	async function createRoom() {
 		try {
@@ -54,10 +72,11 @@
 				<InputWithErrorMessage
 					id="roomCodeInput"
 					labelText="Room Code"
-					value=""
-					placeholder="123456"
+					bind:value={roomCode}
+					placeholder="CCC99"
+					validator={validateRoomCode}
 				/>
-				<IconButtonWithLoadingSpinner text="Join Chat Room" icon={faAnglesRight} />
+				<IconButtonWithLoadingSpinner text="Join Chat Room" icon={faAnglesRight} onClick={() => goto(`/rooms/${roomCode.toUpperCase()}`)}/>
 			</div>
 		</div>
 	</div>

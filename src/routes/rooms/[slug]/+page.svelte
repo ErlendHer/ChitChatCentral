@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { userInfo } from '$lib/client/auth/auth';
-	import IconFa from '$lib/client/components/common/IconFa.svelte';
 	import SimpleLoadingSpinner from '$lib/client/components/common/SimpleLoadingSpinner.svelte';
 	import WrapWithAuth from '$lib/client/components/common/WrapWithAuth.svelte';
 	import RoomError from '$lib/client/components/views/rooms/RoomError.svelte';
@@ -8,9 +6,7 @@
 	import RoomView from '$lib/client/components/views/rooms/RoomView.svelte';
 	import { openSuccessToast } from '$lib/client/toast';
 	import { cccApiGET } from '$lib/client/utils/apiUtils';
-	import type { Response_GetRoom, RoomsResponses } from '@cccApi/rooms';
-	import { faWarning } from '@fortawesome/free-solid-svg-icons';
-	import { API } from 'aws-amplify';
+	import type { RoomsResponses } from '@cccApi/rooms';
 	import { onMount } from 'svelte';
 
 	export let data: {

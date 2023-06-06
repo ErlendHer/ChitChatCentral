@@ -4,15 +4,6 @@ export interface ProfileInfo {
   profileUrl: string;
 }
 
-export interface RoomCommand_message {
-  type: "message",
-  payload: {
-    message: string;
-    timeSent: string;
-    sender: ProfileInfo;
-  }
-}
-
 export interface RoomCommand_join {
   type: "join",
   payload: {
@@ -20,7 +11,19 @@ export interface RoomCommand_join {
   }
 }
 
+
+export interface RoomCommand_leave {
+  type: "leave",
+  payload: {
+    user: ProfileInfo;
+  }
+}
+
+export interface RoomCommand_update {
+  type: "update"
+}
+
 export type RoomMessage = {
   id: string;
-  command: RoomCommand_message | RoomCommand_join;
+  command: RoomCommand_leave | RoomCommand_join | RoomCommand_update;
 }

@@ -1,13 +1,13 @@
 import type { Handler, Request } from 'express';
 import Joi from 'joi';
-import { Request_SendMessage, Response_CreateRoom, Response_GetMessages, Response_GetRoom, Response_Participants, Response_SendMessage } from 'lib/shared/rooms';
+import { Request_AddParticipant, Request_SendMessage, Request_ToggleOpenToPublic, Response_AddParticipant, Response_CreateRoom, Response_GetMessages, Response_GetRoom, Response_Participants, Response_SendMessage, Response_ToggleOpenToPublic } from 'lib/shared/rooms';
 import * as Nanoid from 'nanoid';
 import { executeGQLRequest } from '../../core/graphqlRequest';
 import { ExpressError, err } from '../../error/error';
 import type { VerifiedReq } from '../../middleware/authentication.middleware';
 import { build } from '../controller.types';
-import { fetchUsersInfo } from './fetchUserInformation';
-import { CreateMessageVariables, CreateRoomVariables, GQL_RESPONSE_createMessage, GQL_RESPONSE_getMessages, GQL_RESPONSE_getRoom, GetAllMessagesAfterVariables, GetAllMessagesVariables, GetRoomData, GetRoomVariables, createMessageQuery, createRoomMutation, getAllMessagesQuery, getMessagesAfterDateQuery, getRoomQuery } from './rooms.queries';
+import { fetchUsersInfo, getUserSub } from './fetchUserInformation';
+import { CreateMessageVariables, CreateRoomVariables, GQL_RESPONSE_UpdateRoom, GQL_RESPONSE_createMessage, GQL_RESPONSE_getMessages, GQL_RESPONSE_getRoom, GetAllMessagesAfterVariables, GetAllMessagesVariables, GetRoomData, GetRoomVariables, ToggleOpenToPublicVariables, UpdateParticipantsVariables, createMessageQuery, createRoomMutation, getAllMessagesQuery, getMessagesAfterDateQuery, getRoomQuery, updateRoomQuery } from './rooms.queries';
 
 const nanoid = Nanoid.customAlphabet("1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ", 5);
 
@@ -52,6 +52,22 @@ const getRoomInfo = build<Response_GetRoom>(async (req) => {
   }
 
   const { roomData } = gqlRoomInfoResult.data;
+
+  const userSub = (req as VerifiedReq).user.sub;
+
+  // If the user enters a public room but is not listed as a member yet, update the database
+  if (!roomData.participants.includes(userSub)) {
+    const gqlResult = await executeGQLRequest<UpdateParticipantsVariables, GQL_RESPONSE_UpdateRoom>(updateRoomQuery, {
+      input: {
+        id: roomData.id,
+        participants: [...roomData.participants, userSub]
+      }
+    });
+
+    if (!gqlResult.success) {
+      return err(new Error(gqlResult.error), 500);
+    }
+  };
 
   return {
     data: {
@@ -185,6 +201,125 @@ const listMessages = build<Response_GetMessages>(async (req) => {
   }
 });
 
+const toggleOpenSchema = Joi.object({
+  openToPublic: Joi.boolean().required(),
+})
+
+const toggleOpenToPublic = build<Response_ToggleOpenToPublic>(async (req) => {
+  const { error } = toggleOpenSchema.validate(req.body);
+
+  if (error) {
+    return err(new Error(error.message), 400);
+  }
+
+  const gqlRoomInfoResult = await getGQLRoomData(req);
+
+  if (!gqlRoomInfoResult.success) {
+    return gqlRoomInfoResult.error;
+  }
+
+  const { openToPublic } = req.body as Request_ToggleOpenToPublic
+
+  const { roomData } = gqlRoomInfoResult.data;
+
+  const gqlResult = await executeGQLRequest<ToggleOpenToPublicVariables, GQL_RESPONSE_UpdateRoom>(updateRoomQuery, {
+    input: {
+      id: roomData.id,
+      requireInvite: !openToPublic
+    }
+  });
+
+  if (!gqlResult.success) {
+    return err(new Error(gqlResult.error), 500);
+  }
+
+  const data = gqlResult.data.data.updateRoom;
+
+  if (!data) {
+    return err(new Error("Failed to update room: empty GQl response"), 500);
+  }
+
+  return {
+    data: {
+      roomId: data.id,
+      requireInvite: data.requireInvite,
+      createdAt: data.createdAt,
+      name: data.name,
+      secret: data.secret,
+      creator: data.creator,
+    }
+  }
+});
+
+const participantSchema = Joi.object({
+  username: Joi.string().required(),
+})
+
+
+const updateParticipant = (update: "add" | "remove") => {
+  return build<Response_GetRoom>(async (req) => {
+    const { error } = participantSchema.validate(req.body);
+
+    if (error) {
+      return err(new Error(error.message), 400);
+    }
+    const { username } = req.body as Request_AddParticipant;
+
+    const gqlRoomInfoResult = await getGQLRoomData(req);
+
+    if (!gqlRoomInfoResult.success) {
+      return gqlRoomInfoResult.error;
+    }
+
+    const { roomData } = gqlRoomInfoResult.data;
+
+
+    const userSub = await getUserSub(username);
+
+    if (!userSub.success) {
+      console.error(userSub.error);
+      return err(new Error("User not found"), 404);
+    }
+
+    const oldParticipants = roomData.participants;
+    const newParticipants = update === "add"
+      ? [...oldParticipants, userSub.data]
+      : oldParticipants.filter((p) => p !== userSub.data);
+
+
+
+    const gqlResult = await executeGQLRequest<UpdateParticipantsVariables, GQL_RESPONSE_UpdateRoom>(updateRoomQuery, {
+      input: {
+        id: roomData.id,
+        participants: newParticipants
+      }
+    });
+
+    if (!gqlResult.success) {
+      return err(new Error(gqlResult.error), 500);
+    }
+
+    const data = gqlResult.data.data.updateRoom;
+
+    if (!data) {
+      return err(new Error("Failed to update room: empty GQl response"), 500);
+    }
+
+    return {
+      data: {
+        roomId: data.id,
+        requireInvite: data.requireInvite,
+        createdAt: data.createdAt,
+        name: data.name,
+        secret: data.secret,
+        creator: data.creator,
+      }
+    }
+
+  });
+}
+
+
 
 export type getGqlRoomDataResult = {
   success: true,
@@ -220,7 +355,7 @@ async function getGQLRoomData(req: Request): Promise<getGqlRoomDataResult> {
 
   const participantSubs = gqlData.participants
 
-  if (!participantSubs.includes(user.sub)) {
+  if (gqlData.requireInvite && !participantSubs.includes(user.sub)) {
     return { success: false, error: err(new Error("You are not a participant of this room"), 403) };
   };
 
@@ -241,6 +376,8 @@ export {
   getRoomInfo,
   getParticipants,
   listMessages,
-  sendMessage
+  sendMessage,
+  toggleOpenToPublic,
+  updateParticipant,
 };
 
