@@ -9,6 +9,8 @@
 	export let username: string;
 	export let profiles: Profile[];
 	export let participantsLoading: boolean;
+	export let roomOwner: string;
+	export let openConfigureModal: () => {};
 
 	$: profileMap = new Map<string, ProfileInfo>(
 		profiles.map((p) => [
@@ -40,7 +42,11 @@
 			{participantsLoading}
 			{profileMap}
 		>
-			<button class="btn btn-outline btn-primary">Invite living being 🔥</button>
+			{#if username === roomOwner}
+				<button class="btn btn-outline btn-primary" on:click={openConfigureModal}
+					>Invite living being 🔥</button
+				>
+			{/if}
 		</ProfileColumn>
 	{:else}
 		<ProfileColumn profiles={rightProfiles} {participantsLoading} {profileMap} />

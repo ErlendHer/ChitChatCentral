@@ -1,7 +1,7 @@
 <script lang="ts">
-	import logo from '$lib/assets/logo/logo-512.png';
-	import { user, userInfo } from '../auth/auth';
 	import defaultProfileImage from '$lib/assets/images/profile-blank.png';
+	import logo from '$lib/assets/logo/logo-512.png';
+	import { userInfo } from '../auth/auth';
 </script>
 
 <nav class="flex flex-row static bg-base-200 w-screen h-16 p-2">
@@ -14,7 +14,7 @@
 			<img
 				src={$userInfo?.profileUrl ?? defaultProfileImage}
 				alt="Profile"
-				class="h-full rounded-full"
+				class="w-[48px] h-[48px] object-cover rounded-full"
 			/>
 			<div class="font-[BubbleGumSans] text-accent text-xl hidden sm:block">Profile</div>
 		</a>

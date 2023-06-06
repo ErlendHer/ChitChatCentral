@@ -180,7 +180,7 @@
 				{/each}
 			</div>
 
-			<div class="flex flex-row items-end -mt-2">
+			<div class="flex flex-row items-end -mt-2 gap-2">
 				<InputWithErrorMessage
 					id="roomParticipantInput"
 					labelText="Add Member"

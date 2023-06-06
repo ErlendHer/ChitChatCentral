@@ -62,7 +62,6 @@
 			},
 			complete: () => console.log('Done')
 		});
-		console.log('Listening on', roomInfo.secret);
 	}
 
 	onDestroy(() => {
@@ -74,9 +73,6 @@
 		triggerUpdate(roomInfo.secret, roomInfo.roomId);
 		await fetchRoomInfo();
 		listenForMessage();
-		setTimeout(() => {
-			triggerUpdate(roomInfo.secret, roomInfo.roomId);
-		}, 5000);
 	});
 </script>
 
@@ -89,6 +85,8 @@
 		{participantsLoading}
 		roomId={roomInfo.roomId}
 		username={user.getUsername()}
+		roomOwner={roomInfo.creator}
+		openConfigureModal={() => (configureModalOpen = true)}
 	/>
 	{#if roomInfo.creator === user.getUsername()}
 		<div class="block sm:absolute right-0 bottom-0 m-2">

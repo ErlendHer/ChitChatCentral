@@ -14,6 +14,7 @@
 	import SimpleLoadingSpinner from '../../common/SimpleLoadingSpinner.svelte';
 	import ProfileProperty from './components/ProfileProperty.svelte';
 	import EditValueModal from './components/EditValueModal.svelte';
+	import { user as userStore } from '$lib/client/auth/auth';
 
 	export let user: CognitoUser;
 	export let userInfo: UserInfo;
@@ -82,6 +83,10 @@
 			openErrorToast(`Failed to upload image with error: ${(err as Error).message}`);
 			waitingForImageUpdate = false;
 		} finally {
+			setInterval(() => {
+				// This is a hack to force the userStore to update with the new profile image url
+				$userStore = $userStore;
+			}, 4000);
 			// Fail-safe in case there is an implementation error and the userInfo doesn't update with the new URL as it should after 10 seconds
 			// This may also trigger due to slow internet or if an uncaught upload error occurred (shouldn't happen)
 			stopWaitingForUpdateAfterTimeout(20_000);

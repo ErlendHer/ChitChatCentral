@@ -9,6 +9,5 @@ export const publishMessage = (secret: string, message: RoomMessage) => {
 };
 
 export const triggerUpdate = (secret: string, roomId: string) => {
-  console.log("Update, publish message");
   publishMessage(secret, { id: roomId, command: { type: "update" } })
 }
