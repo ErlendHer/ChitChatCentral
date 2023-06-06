@@ -84,7 +84,7 @@
 		} finally {
 			// Fail-safe in case there is an implementation error and the userInfo doesn't update with the new URL as it should after 10 seconds
 			// This may also trigger due to slow internet or if an uncaught upload error occurred (shouldn't happen)
-			stopWaitingForUpdateAfterTimeout(10_000);
+			stopWaitingForUpdateAfterTimeout(20_000);
 			uploadLoading = false;
 		}
 	}
@@ -190,7 +190,7 @@
 			text="Sign Out"
 			onClick={signOut}
 			icon={faRightFromBracket}
-			class="btn-warning hover:brightness-110 mt-4"
+			class="btn-warning hover:brightness-110 mt-4 mb-4"
 		/>
 	</div>
 </div>

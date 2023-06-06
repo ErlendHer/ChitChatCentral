@@ -74,6 +74,9 @@
 		triggerUpdate(roomInfo.secret, roomInfo.roomId);
 		await fetchRoomInfo();
 		listenForMessage();
+		setTimeout(() => {
+			triggerUpdate(roomInfo.secret, roomInfo.roomId);
+		}, 5000);
 	});
 </script>
 

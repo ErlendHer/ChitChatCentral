@@ -10,22 +10,21 @@
 	let createRoomLoading = false;
 	let roomCode = '';
 
-	const validateRoomCode = (code: string) : string | null => {
-		if (!code || code === "") {
-			return "Room code cannot be empty";
+	const validateRoomCode = (code: string): string | null => {
+		if (!code || code === '') {
+			return 'Room code cannot be empty';
 		}
 
 		if (!/^[a-zA-Z0-9]+$/.test(code)) {
-			return "Room code can only contain letters and numbers";
+			return 'Room code can only contain letters and numbers';
 		}
 
 		if (code.length !== 5) {
-			return "Room code must be 5 characters long";
+			return 'Room code must be 5 characters long';
 		}
 
 		return null;
-	}
-
+	};
 
 	async function createRoom() {
 		try {
@@ -75,8 +74,15 @@
 					bind:value={roomCode}
 					placeholder="CCC99"
 					validator={validateRoomCode}
+					reserveSpaceForErrorMessage={false}
+					class="mb-4"
 				/>
-				<IconButtonWithLoadingSpinner text="Join Chat Room" icon={faAnglesRight} onClick={() => goto(`/rooms/${roomCode.toUpperCase()}`)}/>
+				<IconButtonWithLoadingSpinner
+					text="Join Chat Room"
+					icon={faAnglesRight}
+					onClick={() => goto(`/rooms/${roomCode.toUpperCase()}`)}
+					class="mb-4"
+				/>
 			</div>
 		</div>
 	</div>

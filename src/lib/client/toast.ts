@@ -2,7 +2,7 @@ import { toast } from '@zerodevx/svelte-toast';
 
 export const openSuccessToast = (message: string) => {
   toast.push(message, {
-    duration: 10000,
+    duration: 4000,
     pausable: true,
     theme: {
       '--toastColor': 'mintcream',
@@ -14,7 +14,7 @@ export const openSuccessToast = (message: string) => {
 
 export const openErrorToast = (message: string) => {
   toast.push(message, {
-    duration: 10000,
+    duration: 8000,
     pausable: true,
     theme: {
       '--toastColor': 'mintcream',

@@ -131,14 +131,10 @@ export async function getMessages(roomId: string, after?: string) {
 }
 
 export function listenForNewMessages(roomId: string, messageSync: MessageSync) {
-
-  console.log("Subscribing to", roomId)
-  // Subscribe to creation of Todo
   const sub = API.graphql<GraphQLSubscription<NewMessageSubscription>>(
     graphqlOperation(newMessage, { roomId: roomId, variables: { roomId: roomId } })
   ).subscribe({
-    next: ({ provider, value }) => {
-      console.log("Received sub event", value);
+    next: ({ value }) => {
       if (value && value.data?.newMessage) {
         messageSync.onNewMessageEvent(value.data.newMessage);
       }
