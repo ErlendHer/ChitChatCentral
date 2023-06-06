@@ -32,7 +32,12 @@
 	let userToAdd = '';
 
 	async function copyToClipboard() {
-		await navigator.clipboard.writeText(url);
+		try {
+			await navigator.clipboard.writeText(url);
+			openSuccessToast('Copied to clipboard');
+		} catch {
+			openErrorToast('Failed to copy to clipboard');
+		}
 	}
 
 	$: url = `${$page.url.origin}/rooms/${roomInfo.roomId}`;
@@ -126,7 +131,7 @@
 					value={url}
 					readonly
 				/>
-				<IconButton icon={faCopy} onClick={() => copyToClipboard()} />
+				<IconButton icon={faCopy} onClick={() => copyToClipboard()} class="hover:brightness-110" />
 			</div>
 		</div>
 		<div class="form-control">
