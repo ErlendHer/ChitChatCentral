@@ -5,7 +5,7 @@ import { PubSub } from "aws-amplify";
 export const roomMessage = writable<RoomMessage | undefined>();
 
 export const publishMessage = (secret: string, message: RoomMessage) => {
-  PubSub.publish(`secret`, message);
+  PubSub.publish(secret, message);
 };
 
 export const triggerUpdate = (secret: string, roomId: string) => {

@@ -4,6 +4,7 @@
 
 	export let profiles: ProfileInfo[];
 	export let participantsLoading: boolean;
+	export let profileMap: Map<string, ProfileInfo>;
 </script>
 
 <div class="flex-col gap-4 hidden sm:flex flex-shrink-0">
@@ -16,7 +17,7 @@
 		{#each profiles as profile}
 			<div class="flex flex-col items-center w-24 md:w-28 lg:w-32">
 				<img
-					src={profile.profileUrl}
+					src={profileMap.get(profile.username)?.profileUrl ?? profile.profileUrl}
 					alt={profile.displayName}
 					class="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-cover"
 				/>

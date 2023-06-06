@@ -18,7 +18,6 @@
 	import { roomMessage } from './messages/roomMessages.store';
 
 	export let roomId: string;
-	export let roomSecret: string;
 	export let username: string;
 	export let profileMap: Map<string, ProfileInfo>;
 
@@ -116,10 +115,6 @@
 			return;
 		}
 		chatContainer.scroll({ top: chatContainer.scrollHeight, behavior: 'smooth' });
-	};
-
-	const handleRoomMessage = (msg: RoomMessage) => {
-		if (msg.command.type !== 'message') return;
 	};
 
 	onMount(async () => {

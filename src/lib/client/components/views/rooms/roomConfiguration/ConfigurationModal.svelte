@@ -3,6 +3,7 @@
 	import IconButton from '$lib/client/components/common/IconButton.svelte';
 	import IconButtonWithLoadingSpinner from '$lib/client/components/common/IconButtonWithLoadingSpinner.svelte';
 	import InputWithErrorMessage from '$lib/client/components/common/InputWithErrorMessage.svelte';
+	import defaultProfileUrl from '$lib/assets/images/profile-blank.png';
 	import Modal from '$lib/client/components/common/Modal.svelte';
 	import type {
 		Request_AddParticipant,
@@ -89,8 +90,10 @@
 			} else {
 				if (status === 'add') {
 					userToAdd = '';
+					openSuccessToast(`Member added to room!`);
+				} else {
+					openSuccessToast(`Member removed from room!`);
 				}
-				openSuccessToast(`Member added to room!`);
 
 				triggerUpdate(roomInfo.secret, roomInfo.roomId);
 			}
@@ -154,22 +157,24 @@
 				Room Members
 			</div>
 
-			<div class="flex flex-row items-center justify-center gap-2 flex-wrap">
+			<div class="flex flex-row items-center justify-center gap-4 flex-wrap">
 				{#each participants as participant (participant.username)}
 					<div class="flex flex-row items-center gap-2">
 						<img
-							src={participant.profileUrl}
+							src={participant.profileUrl ?? defaultProfileUrl}
 							alt={participant.displayName}
 							class="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-full object-cover"
 						/>
-						<div class="flex flex-col items-center justify-center gap-2">
+						<div class="flex flex-col items-center justify-center">
 							<div class="font-BubbleGumSans text-lg text-center text-accent break-words">
 								{participant.displayName}
 							</div>
-							<button
-								class="text text-error font-semibold text-md"
-								on:click={() => updateMember('remove', participant.username)}>Remove</button
-							>
+							{#if participant.username !== roomInfo.creator}
+								<button
+									class="text text-error font-semibold text-xs"
+									on:click={() => updateMember('remove', participant.username)}>Remove</button
+								>
+							{/if}
 						</div>
 					</div>
 				{/each}

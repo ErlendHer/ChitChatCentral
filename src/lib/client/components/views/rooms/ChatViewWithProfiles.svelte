@@ -9,7 +9,6 @@
 	export let username: string;
 	export let profiles: Profile[];
 	export let participantsLoading: boolean;
-	export let roomSecret: string;
 
 	$: profileMap = new Map<string, ProfileInfo>(
 		profiles.map((p) => [
@@ -27,8 +26,8 @@
 </script>
 
 <div class="flex flex-row w-full h-full justify-center gap-8">
-	<ProfileColumn profiles={leftProfiles} {participantsLoading} />
-	<ChatView {roomId} {username} {profileMap} {roomSecret} />
+	<ProfileColumn profiles={leftProfiles} {participantsLoading} {profileMap} />
+	<ChatView {roomId} {username} {profileMap} />
 	{#if rightProfiles.length === 0}
 		<ProfileColumn
 			profiles={[
@@ -39,10 +38,11 @@
 				}
 			]}
 			{participantsLoading}
+			{profileMap}
 		>
 			<button class="btn btn-outline btn-primary">Invite living being 🔥</button>
 		</ProfileColumn>
 	{:else}
-		<ProfileColumn profiles={rightProfiles} {participantsLoading} />
+		<ProfileColumn profiles={rightProfiles} {participantsLoading} {profileMap} />
 	{/if}
 </div>

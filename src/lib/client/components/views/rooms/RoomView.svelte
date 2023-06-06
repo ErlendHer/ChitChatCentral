@@ -17,7 +17,6 @@
 	import IconButton from '../../common/IconButton.svelte';
 	import { faCog } from '@fortawesome/free-solid-svg-icons';
 	import ConfigurationModal from './roomConfiguration/ConfigurationModal.svelte';
-	import { userInfo } from '$lib/client/auth/auth';
 
 	export let roomInfo: RoomInfo;
 	export let user: CognitoUser;
@@ -39,7 +38,6 @@
 			if (!roomInfoResult.success) throw new Error(roomInfoResult.error.messageWithCode);
 
 			participantInfo = roomInfoResult.data.data;
-			console.log(participantInfo);
 		} catch (err) {
 			console.error(err);
 			openErrorToast(`${(err as Error).message}`);
@@ -51,6 +49,7 @@
 	async function listenForMessage() {
 		messagesSubscription = PubSub.subscribe(roomInfo.secret).subscribe({
 			next: async (data) => {
+				console.log('Received message', data);
 				const msg = data.value as RoomMessage;
 				$roomMessage = msg;
 
@@ -87,7 +86,6 @@
 		{participantsLoading}
 		roomId={roomInfo.roomId}
 		username={user.getUsername()}
-		roomSecret={roomInfo.secret}
 	/>
 	{#if roomInfo.creator === user.getUsername()}
 		<div class="block sm:absolute right-0 bottom-0 m-2">

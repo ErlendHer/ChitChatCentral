@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Message } from './messageSync';
+	import type { Message } from './messages/messageSync';
 	import type { ProfileInfo } from './rooms.types';
 	import defaultProfileUrl from '$lib/assets/images/profile-blank.png';
 
